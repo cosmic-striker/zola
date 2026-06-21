@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Into the Void 2.0</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="/styles.css" rel="stylesheet" />
+    <script src="/assets/js/tailwind-config.js"></script>
+    <style>
+        @media (max-width: 768px) {
+            .border-matrix {
+                width: max-content !important;
+                max-width: none !important;
+                transform: scale(0.8) !important;
+                transform-origin: center center !important;
+                margin: auto 0 !important;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .border-matrix {
+                width: max-content !important;
+                max-width: none !important;
+                transform: scale(0.58) !important;
+                transform-origin: center center !important;
+                margin: auto 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-black text-on-surface selection:bg-primary-container selection:text-on-primary-container font-body-md overflow-x-hidden">
+
+    <!-- TopNavBar Placeholder -->
+    <div id="navbar-placeholder"></div>
+    <main>
+        <!-- Hero Section: Fractured Multiverse -->
+        <section id="home"
+            class="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center overflow-hidden py-12 px-margin-mobile md:px-margin-desktop ">
+            <div class="absolute inset-0 z-0 overflow-hidden">
+                <iframe src="/particle" class="w-full h-full border-none pointer-events-auto hidden md:block"
+                    style="transform: translateY(-9px);"></iframe>
+                <div id="multiverse-scene" class="hidden md:block">
+                    <img src="/assets/images/castle.png" class="realm castle">
+                    <img src="/assets/images/orageworld.png" class="realm orange">
+                    <img src="/assets/images/cybercity.png" class="realm cyber">
+
+
+                    <img src="/assets/images/ironman.png" class="realm ironman">
+                    <img src="/assets/images/pyramid.png" class="realm pyramid">
+                    <img src="/assets/images/galaxy.png" class="realm galaxy">
+
+                </div>
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-50% to-black to-80% pointer-events-none">
+                </div>
+            </div>
+            <div class="relative z-10 text-center max-w-4xl">
+
+            </div>
+
+            <!-- Enhanced Holographic Countdown Timer -->
+            <div
+                class="absolute top-[50vh] md:top-[75vh] left-0 w-full flex justify-center gap-3 sm:gap-4 md:gap-8 px-4 z-20 -translate-y-1/2 mt-16 md:mt-0">
+                <img src="/assets/images/mobi.png"
+                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-8 w-[85vw] max-w-[450px] h-auto z-10 md:hidden pointer-events-none"
+                    alt="" />
+
+
+                <!-- Days -->
+                <div class="timer-block group">
+                    <div class="timer-block-inner">
+                        <div class="absolute top-4 font-label-caps text-[9px] text-white/50 tracking-widest">
+                            NODE_01</div>
+                        <div id="timer-days"
+                            class="font-display-lg text-4xl md:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+                            24</div>
+                        <div
+                            class="font-label-caps text-[10px] md:text-xs text-on-surface-variant uppercase tracking-[0.2em] mt-1">
+                            DAYS</div>
+                    </div>
+                </div>
+
+                <!-- Hours -->
+                <div class="timer-block group">
+                    <div class="timer-block-inner">
+                        <div class="absolute top-4 font-label-caps text-[9px] text-white/50 tracking-widest">
+                            NODE_02</div>
+                        <div id="timer-hours"
+                            class="font-display-lg text-4xl md:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+                            08</div>
+                        <div
+                            class="font-label-caps text-[10px] md:text-xs text-on-surface-variant uppercase tracking-[0.2em] mt-1">
+                            HRS</div>
+                    </div>
+                </div>
+
+                <!-- Minutes -->
+                <div class="timer-block group">
+                    <div class="timer-block-inner">
+                        <div class="absolute top-4 font-label-caps text-[9px] text-white/50 tracking-widest">
+                            NODE_03</div>
+                        <div id="timer-minutes"
+                            class="font-display-lg text-4xl md:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+                            42</div>
+                        <div
+                            class="font-label-caps text-[10px] md:text-xs text-on-surface-variant uppercase tracking-[0.2em] mt-1">
+                            MIN</div>
+                    </div>
+                </div>
+
+                <!-- Seconds -->
+                <div class="timer-block group">
+                    <div class="timer-block-inner">
+                        <div
+                            class="absolute top-4 font-label-caps text-[9px] text-white/50 tracking-widest animate-pulse">
+                            ERR_SYNC</div>
+                        <div id="timer-seconds"
+                            class="font-display-lg text-4xl md:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-[pulse_1s_ease-in-out_infinite]">
+                            15</div>
+                        <div
+                            class="font-label-caps text-[10px] md:text-xs text-on-surface-variant uppercase tracking-[0.2em] mt-1">
+                            SEC</div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="absolute font-label-caps"
+                style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); z-index: 50; display: flex; align-items: center; gap: 12px; white-space: nowrap; pointer-events: none;">
+                <span class="text-[12px] md:text-[15px]" style="
+                    font-family: 'Space Mono', 'JetBrains Mono', monospace;
+                    letter-spacing: 0.35em;
+                    color: rgba(255, 255, 255, 0.7);
+                    text-transform: uppercase;
+                    font-weight: 700;
+                ">INTO THE VOID</span>
+                <span style="
+                    width: 2px;
+                    height: 14px;
+                    background: #00dbea;
+                    display: inline-block;
+                    flex-shrink: 0;
+                    box-shadow: 0 0 8px rgba(0, 219, 233, 0.8);
+                "></span>
+                <span class="text-[14px] md:text-[18px]" style="
+                    font-family: 'Space Mono', 'JetBrains Mono', monospace;
+                    letter-spacing: 0.15em;
+                    font-weight: 700;
+                    background: linear-gradient(90deg, #00dbea, #a259ff, #00dbea);
+                    background-size: 200% auto;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    text-shadow: 0 0 10px rgba(162, 89, 255, 0.2);
+                    animation: voidGlowShift 3s linear infinite;
+                    text-transform: uppercase;
+                ">2.0</span>
+                <style>
+                    @keyframes voidGlowShift {
+                        0% {
+                            background-position: 0% center;
+                        }
+
+                        100% {
+                            background-position: 200% center;
+                        }
+                    }
+                </style>
+            </div>
+        </section>
+        <!-- Main Content: Temporal Log -->
+        <section id="event"
+            class="min-h-screen flex flex-col justify-center mb-16 pt-16 mt-20 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
+
+            <div class="relative">
+                <!-- Vertical Timeline Line -->
+                <div
+                    class="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-secondary to-primary/10 -translate-x-1/2 hidden md:block">
+                </div>
+                <!-- Timeline Item 1: Prelims -->
+                <div class="relative mb-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="md:text-right">
+                        <div
+                            class="inline-block px-4 py-1 bg-primary/20 border border-primary text-primary font-label-caps text-label-caps mb-4">
+                            JULY 11-12</div>
+                        <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">
+                            VOID_PRELIMS</h3>
+                        <p class="font-body-md text-on-surface-variant">Initial wave of temporal synchronization.
+                            Competitors must bridge the first gap. High dropout rate predicted.</p>
+                    </div>
+                    <div class="relative hidden md:block">
+                        <div class="absolute left-0 top-1/2 w-8 h-px bg-primary -translate-y-1/2 -translate-x-full">
+                        </div>
+                        <div class="p-6 bg-surface-container-lowest border border-primary/10 backdrop-blur-xl">
+                            <div class="text-[10px] font-label-caps text-primary/60 mb-2">TERMINAL_OUTPUT</div>
+                            <code class="text-[12px] text-primary/80 block font-body-md">
+                                &gt; RUN PRELIM_PROTO_V1<br />
+                                &gt; SCANNING SECTOR 7...<br />
+                                &gt; 412 ENTITIES DETECTED<br />
+                                &gt; SYNC_LOCK: ENGAGED
+                            </code>
+                        </div>
+                    </div>
+                </div>
+                <!-- Timeline Item 2: Finals -->
+                <div class="relative mb-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="order-2 md:order-1 relative hidden md:block">
+                        <div class="absolute right-0 top-1/2 w-8 h-px bg-secondary -translate-y-1/2 translate-x-full">
+                        </div>
+                        <div class="p-6 bg-surface-container-lowest border border-secondary/10 backdrop-blur-xl">
+                            <div class="text-[10px] font-label-caps text-secondary/60 mb-2">SYSTEM_LOG</div>
+                            <code class="text-[12px] text-secondary/80 block font-body-md">
+                                &gt; AUTH_LEVEL: OMEGA<br />
+                                &gt; DECRYPTING FINALS_KEY<br />
+                                &gt; 32 SURVIVORS REMAIN<br />
+                                &gt; STABILITY: 42%
+                            </code>
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <div
+                            class="inline-block px-4 py-1 bg-secondary/20 border border-secondary text-secondary font-label-caps text-label-caps mb-4">
+                            JULY 30-31</div>
+                        <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">
+                            CORE_FINAL_RECKONING</h3>
+                        <p class="font-body-md text-on-surface-variant">The elite remain. Neural degradation becomes a
+                            significant factor. Reality begins to warp at the event horizon.</p>
+                    </div>
+                </div>
+                <!-- Timeline Item 3: Main Conference -->
+                <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="md:text-right">
+                        <div
+                            class="inline-block px-4 py-1 bg-primary text-on-primary font-label-caps text-label-caps mb-4">
+                            AUGUST 01</div>
+                        <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">
+                            THE_VOID_CONVERGENCE</h3>
+                        <p class="font-body-md text-on-surface-variant">Main Conference. Global synchronization. The
+                            unveiling of the 2.0 architecture and the Syndicate reveal.</p>
+                    </div>
+                    <div class="relative hidden md:block">
+                        <div class="absolute left-0 top-1/2 w-8 h-px bg-primary -translate-y-1/2 -translate-x-full">
+                        </div>
+                        <div class="overflow-hidden border border-primary/20">
+                            <img alt="Main Conference Hall Preview"
+                                class="w-full h-48 object-cover grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
+                                data-alt="A futuristic cyberpunk conference hall filled with holographic displays and high-tech equipment. The lighting is dominated by deep blues and purples, reflecting off sleek metallic surfaces and glass partitions. Silhouettes of focused tech professionals move through a workspace layered with glowing data readouts and complex circuitry patterns. The atmosphere is intense, sophisticated, and deeply immersive."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjw5oYZSdQiS0WpkUAKPM-zigY83JuIgzLpEL5sKYkuqyg4N68eygcVJjeHRPO47e5YT43BUqn8DTawpH5HBHOadKKoKIrkxyYY8HVJqdK-s20FB5ouRgtSZXAPsKeZSIBGbsboOOJEPf5mpp176Ij7XGlQKbxhlFwxxPlJlw2kljlb2moFvCW7Sft2fmH_gSbEdoa_e9mDumRfNmVAG8Rc85fxlaTO4NYWnDrZ23-7D0WPcsO0iPVXP5qHN4aOedkSFaUdtFO_7c" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="registration"
+            class="min-h-screen flex flex-col justify-center pt-16 pb-24 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto w-full">
+            <div class="flex flex-wrap justify-center items-center gap-32">
+                <a href="/ctf" alt="Mythrill">
+                    <div class="card">
+                        <div class="wrapper">
+                            <img src="/assets/images/redpill.png" class="cover-image" />
+                        </div>
+                        <img src="/assets/images/ctfover.png" class="title" />
+                        <img src="/assets/images/overl.png" style="top: 9%;" class="character" />
+                    </div>
+                </a>
+
+                <a href="/comingsoon" alt="Mythrill">
+                    <div class="card">
+                        <div class="wrapper">
+                            <img src="/assets/images/confre.png" class="cover-image" />
+                        </div>
+                        <img src="/assets/images/conover.png" class="title" />
+                        <img src="/assets/images/over3.png" class="character" />
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ── HYPER SCROLL: Embedded Inline 3D Section ── -->
+        <!-- This container is TALL so scrolling drives the 3D camera. The viewport inside is sticky. -->
+        <section id="hyper-inline" style="position:relative; height:400vh; background:#030303;">
+
+            <!-- Sticky 3D viewport — stays pinned while user scrolls through the 400vh container -->
+            <div id="hi-viewport" style="
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                width: 100%;
+                overflow: hidden;
+                perspective: 1000px;
+                z-index: 2;
+                background: #030303;
+            ">
+                <!-- CRT Scanlines overlay -->
+                <div
+                    style="position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(0,0,0,0.18) 2px,rgba(0,0,0,0.18) 4px);pointer-events:none;z-index:10;">
+                </div>
+                <!-- Vignette overlay -->
+                <div
+                    style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 50%,#000 130%);pointer-events:none;z-index:11;">
+                </div>
+
+                <!-- HUD -->
+                <div
+                    class="absolute inset-4 md:inset-8 z-20 pointer-events-none flex flex-col justify-between font-mono text-[9px] md:text-[10px] text-white/45 uppercase tracking-wider">
+                    <div class="flex items-center justify-between w-full">
+                        <span>NEURAL_GRID // ACTIVE</span>
+                        <div class="hidden sm:block flex-1 h-px bg-white/20 mx-4 relative">
+                            <div class="absolute right-[-1px] top-[-2px] w-[5px] h-[5px] bg-[#ff003c]"></div>
+                        </div>
+                        <span>VEL&nbsp;<strong id="hi-vel" class="text-[#00f3ff]">0.00</strong></span>
+                    </div>
+                    <div style="writing-mode: vertical-rl;" class="rotate-180 self-start my-auto">
+                        DEPTH // <strong id="hi-coord" class="text-[#00f3ff]">0</strong>
+                    </div>
+                    <div class="flex items-center justify-between w-full">
+                        <span>INTO THE VOID 2.0</span>
+                        <div class="hidden sm:block flex-1 h-px bg-white/20 mx-4 relative">
+                            <div class="absolute right-[-1px] top-[-2px] w-[5px] h-[5px] bg-[#ff003c]"></div>
+                        </div>
+                        <span>VER&nbsp;2.0.4&nbsp;[BETA]</span>
+                    </div>
+                </div>
+
+                <!-- The 3D world -->
+                <div id="hi-world"
+                    style="position:absolute;top:50%;left:50%;transform-style:preserve-3d;will-change:transform;"></div>
+            </div>
+        </section>
+
+        <div id="sponsors"
+            class="min-h-screen flex flex-col justify-center pt-24 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto w-full">
+            <!-- Hero Section -->
+            <!-- <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-16">
+                <div class="md:col-span-12 mb-8">
+                    <h1
+                        class="font-display-lg text-display-lg text-primary tracking-tighter uppercase italic leading-none">
+                        Holographic Wall</h1>
+                    <p class="font-body-md text-on-surface-variant mt-4 max-w-2xl">Our sponsors form the backbone of the
+                        multiverse infrastructure. These visionary organizations provide the technology, resources, and
+                        support that make Into the Void 2.0 possible.</p>
+                </div> -->
+            <!-- Platinum Sponsors -->
+            <!-- <div
+                    class="md:col-span-6 group relative overflow-hidden bg-surface-container-low border border-primary/30 p-8 hover:border-primary transition-all backdrop-blur-md">
+                    <div class="absolute top-4 right-4 text-[10px] font-label-caps text-primary/40">TIER: PLATINUM</div>
+                    <div class="mb-6 flex items-center justify-between">
+                        <span class="material-symbols-outlined text-4xl text-primary"
+                            style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                        <span
+                            class="bg-primary/10 text-primary px-3 py-1 text-[10px] font-label-caps border border-primary/20">ELITE_PARTNERS</span>
+                    </div>
+                    <h2 class="font-headline-xl text-headline-xl text-primary mb-4 leading-tight">Platinum Sponsors</h2>
+                    <p class="font-body-md text-on-surface-variant mb-6">These organizations represent the pinnacle of
+                        multiverse technology and innovation. Their commitment to advancing the boundaries of reality
+                        makes everything possible.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-surface/40 border border-primary/20">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 bg-primary/20 flex items-center justify-center border border-primary">
+                                    <span class="material-symbols-outlined text-primary">hive</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-label-caps text-primary text-sm">CYBER_DYNE_SYSTEMS</h3>
+                                    <p class="text-[10px] text-on-surface-variant">Advanced AI and neural interface
+                                        technology</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-surface/40 border border-primary/20">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 bg-secondary/20 flex items-center justify-center border border-secondary">
+                                    <span class="material-symbols-outlined text-secondary">neurology</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-label-caps text-secondary text-sm">VOID_TECH_CORPORATION</h3>
+                                    <p class="text-[10px] text-on-surface-variant">Quantum computing and dimensional
+                                        engineering</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> -->
+            <!-- Gold Sponsors -->
+            <!-- <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-16">
+                <div
+                    class="md:col-span-6 group relative overflow-hidden bg-surface-container-low border border-secondary/30 p-8 hover:border-secondary transition-all backdrop-blur-md">
+                    <div class="absolute top-4 right-4 text-[10px] font-label-caps text-secondary/40">TIER: GOLD</div>
+                    <div class="mb-6 flex items-center justify-between">
+                        <span class="material-symbols-outlined text-4xl text-secondary"
+                            style="font-variation-settings: 'FILL' 1;">stars</span>
+                        <span
+                            class="bg-secondary/10 text-secondary px-3 py-1 text-[10px] font-label-caps border border-secondary/20">PREMIUM_PARTNERS</span>
+                    </div>
+                    <h2 class="font-headline-xl text-headline-xl text-secondary mb-4 leading-tight">Gold Sponsors</h2>
+                    <p class="font-body-md text-on-surface-variant mb-6">Gold tier sponsors provide critical
+                        infrastructure and resources that support our mission to explore and secure the multiverse.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-surface/40 border border-secondary/20">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 bg-primary/20 flex items-center justify-center border border-primary">
+                                    <span class="material-symbols-outlined text-primary">token</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-label-caps text-primary text-sm">DATA_CORE_LABS</h3>
+                                    <p class="text-[10px] text-on-surface-variant">Big data analytics and quantum
+                                        storage solutions</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-surface/40 border border-secondary/20">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 bg-secondary/20 flex items-center justify-center border border-secondary">
+                                    <span class="material-symbols-outlined text-secondary">public</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-label-caps text-secondary text-sm">GLOBAL_LINK_NETWORKS</h3>
+                                    <p class="text-[10px] text-on-surface-variant">Inter-dimensional communication
+                                        systems</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-surface/40 border border-primary/20">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 bg-primary/20 flex items-center justify-center border border-primary">
+                                    <span class="material-symbols-outlined text-primary">hub</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-label-caps text-primary text-sm">HUB_CONNECT_SOLUTIONS</h3>
+                                    <p class="text-[10px] text-on-surface-variant">Neural network infrastructure and
+                                        connectivity</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> -->
+            <!-- Sponsor Showcase (Now Matrix Animation) -->
+            <section class="min-h-screen flex flex-col items-center justify-center overflow-hidden">
+                <div class="border-matrix w-full max-w-5xl">
+                    <h1 class="font-display-lg text-headline-xl text-primary tracking-tight uppercase mb-8 text-center"
+                        style="text-shadow: 0 0 10px rgba(0,219,233,0.5);">Pov: You Made Good Choices.</h1>
+                    <div id="matrix"></div>
+                </div>
+                <canvas id="canvas" style="display:none;"></canvas>
+            </section>
+            <!-- Partnership Opportunities -->
+            <section class="mb-16">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12 border-b border-secondary/20 pb-4">
+                    <div class="flex items-center gap-4">
+                        <h2
+                            class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-secondary tracking-tight uppercase">
+                            Partnership Opportunities</h2>
+                        <div class="h-2 w-2 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_#d05bff]"></div>
+                    </div>
+                    <div class="font-label-caps text-label-caps text-on-surface-variant text-xs sm:text-sm">
+                        BECOME_A_SPONSOR</div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Technology Partner -->
+                    <div class="bg-surface-container-lowest border border-primary/10 p-6 backdrop-blur-xl">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-primary/20 flex items-center justify-center border border-primary">
+                                <span class="material-symbols-outlined text-primary">memory</span>
+                            </div>
+                            <div>
+                                <h3 class="font-label-caps text-primary text-sm">TECHNOLOGY_PARTNER</h3>
+                                <p class="text-[10px] text-on-surface-variant">Hardware & Software Solutions</p>
+                            </div>
+                        </div>
+                        <p class="text-[12px] text-on-surface-variant mb-4">Provide cutting-edge technology that powers
+                            the multiverse infrastructure. Your innovations will be showcased to elite operators
+                            worldwide.</p>
+                        <!-- <button
+                            class="w-full py-2 bg-primary/10 border border-primary/30 text-primary font-label-caps text-[10px] hover:bg-primary/20 transition-all">
+                            LEARN_MORE
+                        </button> -->
+                    </div>
+                    <!-- Research Partner -->
+                    <div class="bg-surface-container-lowest border border-secondary/10 p-6 backdrop-blur-xl">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div
+                                class="w-12 h-12 bg-secondary/20 flex items-center justify-center border border-secondary">
+                                <span class="material-symbols-outlined text-secondary">science</span>
+                            </div>
+                            <div>
+                                <h3 class="font-label-caps text-secondary text-sm">RESEARCH_PARTNER</h3>
+                                <p class="text-[10px] text-on-surface-variant">Academic & Research Institutions</p>
+                            </div>
+                        </div>
+                        <p class="text-[12px] text-on-surface-variant mb-4">Collaborate on groundbreaking research in
+                            quantum computing, neural interfaces, and dimensional engineering.</p>
+                        <!-- <button
+                            class="w-full py-2 bg-secondary/10 border border-secondary/30 text-secondary font-label-caps text-[10px] hover:bg-secondary/20 transition-all">
+                            LEARN_MORE
+                        </button> -->
+                    </div>
+                    <!-- Community Partner -->
+                    <div class="bg-surface-container-lowest border border-primary/10 p-6 backdrop-blur-xl">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-primary/20 flex items-center justify-center border border-primary">
+                                <span class="material-symbols-outlined text-primary">groups</span>
+                            </div>
+                            <div>
+                                <h3 class="font-label-caps text-primary text-sm">COMMUNITY_PARTNER</h3>
+                                <p class="text-[10px] text-on-surface-variant">Community & Education</p>
+                            </div>
+                        </div>
+                        <p class="text-[12px] text-on-surface-variant mb-4">Support the next generation of multiverse
+                            architects through educational programs and community initiatives.</p>
+                        <!-- <button
+                            class="w-full py-2 bg-primary/10 border border-primary/30 text-primary font-label-caps text-[10px] hover:bg-primary/20 transition-all">
+                            LEARN_MORE
+                        </button> -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-black/95 border-t border-primary/20 py-10">
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col lg:flex-row items-center justify-between gap-8">
+            <a class="flex items-center gap-4 group" data-env="CLUB_URL" href="https://www.exploitx.org"
+                aria-label="ExploitX official club page">
+                <img src="/assets/images/exploitx-logo.png" alt="ExploitX club logo"
+                    class="w-12 h-12 rounded-full border border-primary/30 bg-black/40 object-contain" />
+                <div class="flex flex-col">
+                    <span
+                        class="text-primary font-bold font-display-lg text-sm uppercase tracking-wider">ExploitX</span>
+                    <span class="text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">Official
+                        club page</span>
+                </div>
+            </a>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="INSTAGRAM_URL" href="https://www.instagram.com/exploitxorg" aria-label="Instagram">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Instagram</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="LINKEDIN_URL" href="https://www.linkedin.com/company/exploitxorg/" aria-label="LinkedIn">
+                    <span class="material-symbols-outlined text-base">work</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="X_URL" href="https://twitter.com/exploitxorg" aria-label="X">
+                    <span class="material-symbols-outlined text-base">close</span>
+                    <span>X</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="REDDIT_URL" href="https://www.reddit.com/user/exploitxorg" aria-label="Reddit">
+                    <span class="material-symbols-outlined text-base">forum</span>
+                    <span>Reddit</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="GITHUB_URL" href="https://github.com/exploitx-org" aria-label="GitHub">
+                    <span class="material-symbols-outlined text-base">code</span>
+                    <span>GitHub</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MASTODON_URL" href="https://mastodon.social/@exploitxorg" aria-label="Mastodon">
+                    <span class="material-symbols-outlined text-base">hub</span>
+                    <span>Mastodon</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MAIL_URL" href="mailto:exploitx@citchennai.net" aria-label="Email">
+                    <span class="material-symbols-outlined text-base">mail</span>
+                    <span>Mail</span>
+                </a>
+            </div>
+        </div>
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop mt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">
+            <div>© 2124 MULTIVERSE_CORE. ALL RIGHTS RESERVED. [RESTRICTED ACCESS]</div>
+            <div class="flex flex-wrap items-center justify-center gap-6">
+                <a class="hover:text-primary transition-all" href="/terms">PROTOCOL_TC</a>
+
+                <a class="hover:text-primary transition-all" href="/privacy">PRIVACY_ENCRYPT</a>
+                <a class="hover:text-primary transition-all" href="/sitemap">SITEMAP_DIR</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/assets/js/footer-links.js"></script>
+    <script src="/assets/js/timer.js"></script>
+    <script src="/assets/js/hyper-scroll.js"></script>
+    <script src="/assets/js/sticky-scroll.js"></script>
+    <script src="/assets/js/navbar.js"></script>
+
+
+    <script src="/assets/js/matrix.js"></script>
+</body>
+
+</html>

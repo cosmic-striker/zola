@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="/styles.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="/assets/js/tailwind-config.js"></script>
+    <link href="/styles.css" rel="stylesheet" />
+</head>
+
+<body
+    class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen font-body-md overflow-x-hidden">
+    <div class="scanline"></div>
+    <!-- TopNavBar -->
+    <!-- TopNavBar Placeholder -->
+    <div id="navbar-placeholder"></div>
+    <!-- SideNavBar Shell (Suppressed as this is a focused Task/Contact Page) -->
+    <main class="pt-32  pb-32 mb-20 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto min-h-screen">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-panel p-8 relative z-10 rounded-2xl border-t-2 border-primary">
+                <video autoplay muted loop id="myVideo">
+                    <source src="/assets/images/coomingsoon.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </main>
+    <footer class="w-full bg-black/95 border-t border-primary/20 py-10">
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col lg:flex-row items-center justify-between gap-8">
+            <a class="flex items-center gap-4 group" data-env="CLUB_URL" href="https://www.exploitx.org"
+                aria-label="ExploitX official club page">
+                <img src="/assets/images/exploitx-logo.png" alt="ExploitX club logo"
+                    class="w-12 h-12 rounded-full border border-primary/30 bg-black/40 object-contain" />
+                <div class="flex flex-col">
+                    <span
+                        class="text-primary font-bold font-display-lg text-sm uppercase tracking-wider">ExploitX</span>
+                    <span class="text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">Official
+                        club page</span>
+                </div>
+            </a>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="INSTAGRAM_URL" href="https://www.instagram.com/exploitxorg" aria-label="Instagram">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Instagram</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="LINKEDIN_URL" href="https://www.linkedin.com/company/exploitxorg/" aria-label="LinkedIn">
+                    <span class="material-symbols-outlined text-base">work</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="X_URL" href="https://twitter.com/exploitxorg" aria-label="X">
+                    <span class="material-symbols-outlined text-base">close</span>
+                    <span>X</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="REDDIT_URL" href="https://www.reddit.com/user/exploitxorg" aria-label="Reddit">
+                    <span class="material-symbols-outlined text-base">forum</span>
+                    <span>Reddit</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="GITHUB_URL" href="https://github.com/exploitx-org" aria-label="GitHub">
+                    <span class="material-symbols-outlined text-base">code</span>
+                    <span>GitHub</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MASTODON_URL" href="https://mastodon.social/@exploitxorg" aria-label="Mastodon">
+                    <span class="material-symbols-outlined text-base">hub</span>
+                    <span>Mastodon</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MAIL_URL" href="mailto:exploitx@citchennai.net" aria-label="Email">
+                    <span class="material-symbols-outlined text-base">mail</span>
+                    <span>Mail</span>
+                </a>
+            </div>
+        </div>
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop mt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">
+            <div>© 2124 MULTIVERSE_CORE. ALL RIGHTS RESERVED. [RESTRICTED ACCESS]</div>
+            <div class="flex flex-wrap items-center justify-center gap-6">
+                <a class="hover:text-primary transition-all" href="/terms">PROTOCOL_TC</a>
+
+                <a class="hover:text-primary transition-all" href="/privacy">PRIVACY_ENCRYPT</a>
+                <a class="hover:text-primary transition-all" href="/sitemap">SITEMAP_DIR</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/assets/js/footer-links.js"></script>
+
+    <script src="/assets/js/navbar.js"></script>
+</body>
+
+</html>

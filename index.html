@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Into The Void 2.0 — Loading</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #000;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Three.js canvas sits at z=0 */
+        #three-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Matrix rain canvas sits above Three.js, below UI */
+        #rain-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            pointer-events: none;
+        }
+
+        #rain-canvas.visible {
+            opacity: 1;
+        }
+
+        /* Cinematic letterbox bars
+        #cinematic-bars {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            box-shadow: inset 0 10vh 0 #000, inset 0 -10vh 0 #000;
+            z-index: 5;
+        } */
+
+        /* White/green flash overlay */
+        #overlay-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #00ffaa;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            mix-blend-mode: screen;
+        }
+
+        /* ── UI elements ── */
+        #titles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0;
+            /* hidden until Phase 3 */
+        }
+
+        #titles.revealed {
+            opacity: 1;
+        }
+
+        /* Each letter wrapped in a span */
+        .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px) scale(0.7);
+            transition: none;
+        }
+
+        .char.in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        #titles h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(28px, 5vw, 72px);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        #titles h1.glitch-loop {
+            animation: glitch 3.5s infinite 1s;
+        }
+
+        #titles h2 {
+            font-size: clamp(11px, 1.8vw, 22px);
+            color: #00ffaa;
+            letter-spacing: 0.35em;
+            margin-top: 14px;
+            text-shadow: 0 0 10px rgba(0, 255, 170, 0.8);
+        }
+
+        #titles .tagline {
+            font-size: clamp(9px, 1vw, 13px);
+            color: rgba(0, 219, 233, 0.6);
+            letter-spacing: 0.5em;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        #titles .tagline.in {
+            opacity: 1;
+        }
+
+        /* Divider line that draws itself */
+        .title-divider {
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffaa, #00dbe9, transparent);
+            margin: 16px auto 0;
+            box-shadow: 0 0 8px #00ffaa;
+            transition: width 0.8s ease;
+        }
+
+        .title-divider.in {
+            width: min(420px, 80vw);
+        }
+
+        /* Progress HUD */
+        #hud {
+            position: absolute;
+            bottom: 13vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(480px, 82vw);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #status-text {
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: #00dbe9;
+            text-shadow: 0 0 8px #00dbe9;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        #progress-track {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.15);
+            position: relative;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #00dbe9;
+            box-shadow: 0 0 12px #00dbe9, 0 0 25px #00ffaa;
+            transition: width 0.08s linear;
+        }
+
+        #progress-pct {
+            font-size: 10px;
+            color: rgba(0, 219, 233, 0.5);
+            letter-spacing: 3px;
+        }
+
+        /* Scanlines */
+        #scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(0, 0, 0, 0.18) 2px, rgba(0, 0, 0, 0.18) 4px);
+            pointer-events: none;
+            z-index: 4;
+            opacity: 0.4;
+        }
+
+        /* ENTER button */
+        #enter-btn {
+            position: absolute;
+            bottom: 12vh;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 16px 56px;
+            background: rgba(0, 20, 14, 0.7);
+            border: 1px solid #00ffaa;
+            color: #00ffaa;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            letter-spacing: 6px;
+            cursor: pointer;
+            z-index: 30;
+            display: none;
+            opacity: 0;
+            transition: all 0.5s ease;
+            text-shadow: 0 0 8px #00ffaa;
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.2), inset 0 0 14px rgba(0, 255, 170, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        #enter-btn:hover {
+            background: rgba(0, 255, 170, 0.15);
+            box-shadow: 0 0 40px rgba(0, 255, 170, 0.5), inset 0 0 20px rgba(0, 255, 170, 0.3);
+            transform: translateX(-50%) scale(1.06);
+            color: #fff;
+            border-color: #fff;
+        }
+
+        /* Glitch keyframes */
+        @keyframes glitch {
+
+            0%,
+            89%,
+            100% {
+                text-shadow: 0 0 20px rgba(0, 219, 233, 0.9), 0 0 50px rgba(0, 255, 170, 0.5);
+                transform: translate(0, 0) skewX(0);
+            }
+
+            90% {
+                text-shadow: -4px 0 #ff003c, 4px 0 #00dbe9;
+                transform: translate(-3px, 1px) skewX(3deg);
+            }
+
+            91% {
+                text-shadow: 4px 0 #ff003c, -4px 0 #00dbe9;
+                transform: translate(3px, -1px) skewX(-3deg);
+            }
+
+            92% {
+                text-shadow: 0 0 20px rgba(0, 219, 233, 0.9);
+                transform: translate(0, 0) skewX(0);
+                clip-path: none;
+            }
+
+            95% {
+                text-shadow: -2px 0 #00dbe9;
+                transform: translate(1px, 2px);
+            }
+
+            96% {
+                text-shadow: 2px 0 #ff003c;
+                transform: translate(-1px, -2px);
+            }
+
+            97% {
+                text-shadow: 0 0 20px rgba(0, 219, 233, 0.9);
+                transform: translate(0, 0);
+            }
+        }
+
+        @keyframes flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            92% {
+                opacity: 1;
+            }
+
+            93% {
+                opacity: 0.4;
+            }
+
+            94% {
+                opacity: 1;
+            }
+
+            96% {
+                opacity: 0.6;
+            }
+
+            97% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #hud {
+                bottom: 11vh;
+            }
+        }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+
+<body>
+
+    <!-- Layer order (z-index): Three.js(1) → Rain(2) → Scanlines(4) → CinBars(5) → UI(10) → Flash(20) → Button(30) -->
+    <canvas id="rain-canvas"></canvas>
+    <div id="cinematic-bars"></div>
+    <div id="scanlines"></div>
+    <div id="overlay-flash"></div>
+
+    <div id="titles">
+        <h1 id="title-h1"></h1>
+        <div class="title-divider" id="title-divider"></div>
+        <h2 id="title-h2"></h2>
+        <div class="tagline" id="title-tagline">EXPLOITX &nbsp;// &nbsp;SYSTEM BREACH COMPLETE</div>
+    </div>
+
+    <div id="hud">
+        <div id="status-text">SYSTEM INITIALIZATION...</div>
+        <div id="progress-track">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="progress-pct">000%</div>
+    </div>
+
+    <button id="enter-btn" onclick="window.location.href='/home'">ENTER MULTIVERSE</button>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- Matrix Rain (plain canvas, no deps)               -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <script>
+        (function () {
+            const rc = document.getElementById('rain-canvas');
+            const rctx = rc.getContext('2d');
+
+            const FONT_SIZE = 16;
+            const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*(){}[]<>/\\|';
+
+            let cols, drops, glowDrops;
+
+            function initRain() {
+                rc.width = window.innerWidth;
+                rc.height = window.innerHeight;
+                cols = Math.floor(rc.width / FONT_SIZE);
+                drops = Array.from({length: cols}, () => Math.random() * -100);
+                // some columns shine bright (leading character)
+                glowDrops = new Set();
+                for (let i = 0; i < cols; i++) {
+                    if (Math.random() < 0.15) glowDrops.add(i);
+                }
+            }
+
+            function drawRain(phase) {
+                // Semi-transparent black fade
+                rctx.fillStyle = phase === 'matrix' ? 'rgba(0,8,4,0.08)' : 'rgba(0,0,0,0.15)';
+                rctx.fillRect(0, 0, rc.width, rc.height);
+
+                rctx.font = FONT_SIZE + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const char = CHARS[Math.floor(Math.random() * CHARS.length)];
+                    const x = i * FONT_SIZE;
+                    const y = drops[i] * FONT_SIZE;
+
+                    // Leading glow character
+                    if (glowDrops.has(i)) {
+                        rctx.fillStyle = '#ffffff';
+                        rctx.shadowBlur = 18;
+                        rctx.shadowColor = '#00ffaa';
+                    } else {
+                        // Random shade of green-cyan
+                        const brightness = 40 + Math.random() * 60;
+                        const isCyan = Math.random() < 0.08;
+                        rctx.fillStyle = isCyan
+                            ? `hsl(186,100%,${brightness}%)`
+                            : `hsl(150,100%,${brightness}%)`;
+                        rctx.shadowBlur = 4;
+                        rctx.shadowColor = '#00ffaa';
+                    }
+
+                    rctx.fillText(char, x, y);
+                    rctx.shadowBlur = 0;
+
+                    // Reset drop to top
+                    if (y > rc.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i] += 0.5;
+                }
+            }
+
+            window._rainInit = initRain;
+            window._rainDraw = drawRain;
+            initRain();
+            window.addEventListener('resize', initRain);
+        })();
+    </script>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- Three.js cinematic scene                          -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <script type="module">
+        import * as THREE from 'three';
+        import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+        import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+        import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+        // ── SETUP ──────────────────────────────────────────
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.02);
+
+        const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+
+        const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight);
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.domElement.id = 'three-canvas';
+        document.body.prepend(renderer.domElement); // insert before rain canvas
+
+        // DOM refs
+        const uiText = document.getElementById('status-text');
+        const flashEl = document.getElementById('overlay-flash');
+        const progressEl = document.getElementById('progress-bar');
+        const progressPct = document.getElementById('progress-pct');
+        const hudEl = document.getElementById('hud');
+        const enterBtn = document.getElementById('enter-btn');
+        const titlesEl = document.getElementById('titles');
+        const rainCanvas = document.getElementById('rain-canvas');
+
+        // ── GROUPS ────────────────────────────────────────
+        const voidGroup = new THREE.Group();
+        const matrixGroup = new THREE.Group();
+        matrixGroup.visible = false;
+        scene.add(voidGroup, matrixGroup);
+
+        // ── BLACK HOLE CORE ───────────────────────────────
+        voidGroup.add(new THREE.Mesh(
+            new THREE.SphereGeometry(2, 64, 64),
+            new THREE.MeshBasicMaterial({color: 0x000000})
+        ));
+
+        // Accretion disk — custom shader
+        const diskGeo = new THREE.RingGeometry(2.1, 9, 256);
+        {
+            const pos = diskGeo.attributes.position;
+            const v = new THREE.Vector3();
+            for (let i = 0; i < pos.count; i++) {
+                v.fromBufferAttribute(pos, i);
+                diskGeo.attributes.uv.setXY(i, v.length() < 3 ? 0 : 1, 1);
+            }
+        }
+
+        const diskShader = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: {value: 0},
+                uColorA: {value: new THREE.Color(0x00dbe9)},
+                uColorB: {value: new THREE.Color(0x00ffaa)},
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                varying vec3 vPos;
+                void main(){
+                    vUv = uv; vPos = position;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+                }`,
+            fragmentShader: `
+                uniform float uTime;
+                uniform vec3  uColorA, uColorB;
+                varying vec2 vUv;
+                varying vec3 vPos;
+                float rnd(vec2 s){ return fract(sin(dot(s,vec2(12.9898,78.233)))*43758.5453); }
+                void main(){
+                    float d     = length(vPos);
+                    float angle = atan(vPos.y, vPos.x);
+                    float spiral= sin(angle*16.0 + uTime*7.0 + d*6.0);
+                    float noise = rnd(vUv + uTime*2.0);
+                    float ring  = step(0.82, fract(d*10.0 - uTime*5.0));
+                    float alpha = smoothstep(2.1,3.0,d) * (1.0-smoothstep(5.5,9.0,d));
+                    vec3 col    = mix(uColorA, uColorB, sin(angle*2.0+uTime)*0.5+0.5);
+                    col        *= (1.0 + spiral*0.5 + ring*0.7) * (0.8+noise*0.5);
+                    gl_FragColor= vec4(col*2.8, alpha);
+                }`,
+            transparent: true,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const disk = new THREE.Mesh(diskGeo, diskShader);
+        disk.rotation.x = -Math.PI / 2.2;
+        voidGroup.add(disk);
+
+        // Glow sphere
+        voidGroup.add(new THREE.Mesh(
+            new THREE.SphereGeometry(2.4, 32, 32),
+            new THREE.MeshBasicMaterial({color: 0x00dbe9, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending, side: THREE.BackSide})
+        ));
+
+        // Star field
+        const starGeo = new THREE.BufferGeometry();
+        const sp = [], sc = [];
+        const pal = [new THREE.Color(0x00ffaa), new THREE.Color(0x00dbe9), new THREE.Color(0xffffff), new THREE.Color(0x113322)];
+        for (let i = 0; i < 6000; i++) {
+            sp.push((Math.random() - .5) * 350, (Math.random() - .5) * 350, (Math.random() - .5) * 350);
+            const c = pal[Math.floor(Math.random() * pal.length)];
+            sc.push(c.r, c.g, c.b);
+        }
+        starGeo.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3));
+        starGeo.setAttribute('color', new THREE.Float32BufferAttribute(sc, 3));
+        const starSystem = new THREE.Points(starGeo, new THREE.PointsMaterial({
+            size: 0.22, vertexColors: true, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.85
+        }));
+        voidGroup.add(starSystem);
+
+        // ── MATRIX MONOLITHS ─────────────────────────────
+        function makeMatrixTex() {
+            const sz = 512, c = document.createElement('canvas');
+            c.width = c.height = sz;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#000804'; ctx.fillRect(0, 0, sz, sz);
+            ctx.font = 'bold 22px monospace';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            for (let x = 0; x < sz; x += 28) {
+                for (let y = 0; y < sz; y += 28) {
+                    if (Math.random() > 0.35) {
+                        const ch = String.fromCharCode(0x30A0 + Math.random() * 96);
+                        ctx.fillStyle = `hsl(150,100%,${30 + Math.random() * 65}%)`;
+                        ctx.fillText(ch, x + 14, y + 14);
+                    }
+                }
+            }
+            const t = new THREE.CanvasTexture(c);
+            t.wrapS = t.wrapT = THREE.RepeatWrapping;
+            return t;
+        }
+
+        const monoMat = new THREE.MeshStandardMaterial({
+            map: makeMatrixTex(), emissive: new THREE.Color(0x002211),
+            emissiveIntensity: 0.6, roughness: 0.1, metalness: 0.9,
+            side: THREE.DoubleSide, transparent: true, opacity: 0.85,
+            blending: THREE.AdditiveBlending
+        });
+        const monoGeo = new THREE.BoxGeometry(4, 45, 4);
+        const monoliths = new THREE.InstancedMesh(monoGeo, monoMat, 450);
+        const dummy = new THREE.Object3D();
+        for (let i = 0; i < 450; i++) {
+            dummy.position.set((Math.random() - .5) * 160, (Math.random() - .5) * 320, (Math.random() - .5) * 160);
+            dummy.rotation.y = Math.random() * Math.PI;
+            dummy.scale.setScalar(Math.random() * 1.5 + 0.5);
+            dummy.updateMatrix();
+            monoliths.setMatrixAt(i, dummy.matrix);
+        }
+        matrixGroup.add(monoliths);
+
+        // Vertical code streams
+        const lGeo = new THREE.BufferGeometry();
+        const lp = [];
+        for (let i = 0; i < 4000; i++) {
+            const x = (Math.random() - .5) * 160, z = (Math.random() - .5) * 160, y = (Math.random() - .5) * 320;
+            lp.push(x, y, z, x, y - (Math.random() * 25 + 5), z);
+        }
+        lGeo.setAttribute('position', new THREE.Float32BufferAttribute(lp, 3));
+        const codeLines = new THREE.LineSegments(lGeo, new THREE.LineBasicMaterial({
+            color: 0x00ffaa, opacity: 0.28, transparent: true, blending: THREE.AdditiveBlending
+        }));
+        matrixGroup.add(codeLines);
+
+        // Floating dust
+        matrixGroup.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+            color: 0x00ffaa, size: 0.12, opacity: 0.4, blending: THREE.AdditiveBlending, transparent: true
+        })));
+
+        // ── AMBIENT LIGHT for monoliths ───────────────────
+        scene.add(new THREE.AmbientLight(0x003311, 2));
+        const ptLight = new THREE.PointLight(0x00ffaa, 3, 80);
+        ptLight.position.set(0, 20, 0);
+        matrixGroup.add(ptLight);
+
+        // ── POST PROCESSING ──────────────────────────────
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+        const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 2.0, 0.8, 0.85);
+        composer.addPass(bloom);
+
+        // ── STATE ─────────────────────────────────────────
+        let pageHidden = false;
+        document.addEventListener('visibilitychange', () => {pageHidden = document.hidden;});
+        const clock = new THREE.Clock();
+        const LOAD_TIME = 10;   // seconds for phase 1
+        const FLASH_DUR = 1.5;
+        let isTransitioned = false;
+        let rainPhase = 'void';
+
+        // ── ANIMATE ───────────────────────────────────────
+        function animate() {
+            requestAnimationFrame(animate);
+            if (pageHidden) return;
+            const t = clock.getElapsedTime();
+
+            // Draw rain every frame
+            window._rainDraw(rainPhase);
+
+            // ── PHASE 1: VOID APPROACH ──
+            if (t < LOAD_TIME) {
+                const p = t / LOAD_TIME;
+                const pPct = Math.floor(p * 100);
+
+                progressEl.style.width = pPct + '%';
+                progressPct.innerText = String(pPct).padStart(3, '0') + '%';
+
+                if (p < 0.20) uiText.innerText = 'ESTABLISHING NEURAL LINK...';
+                else if (p < 0.45) uiText.innerText = 'DECRYPTING MULTIVERSE SIGNATURES...';
+                else if (p < 0.70) uiText.innerText = 'MAPPING DIMENSIONAL TOPOLOGY...';
+                else if (p < 0.88) uiText.innerText = 'SYNCHRONIZING VOID V2.0 CORE...';
+                else {
+                    uiText.innerText = 'CRITICAL: EVENT HORIZON BREACH';
+                    uiText.style.color = '#ff003c';
+                    uiText.style.textShadow = '0 0 10px #ff003c';
+                    progressEl.style.background = '#ff003c';
+                    progressEl.style.boxShadow = '0 0 15px #ff003c';
+                    progressPct.style.color = '#ff003c';
+                }
+
+                // Exponential camera zoom
+                camera.position.z = 65 - 63 * Math.pow(p, 3);
+                camera.position.x = Math.sin(t * 0.45) * 1.5;
+
+                // Shake intensifies near horizon
+                const shake = Math.pow(p, 4) * 0.7;
+                camera.position.x += (Math.random() - .5) * shake;
+                camera.position.y += (Math.random() - .5) * shake;
+                camera.rotation.z = Math.sin(t * 0.8) * 0.08 * p;
+
+                diskShader.uniforms.uTime.value = t;
+                disk.rotation.z -= 0.035 + p * 0.45;
+
+                starSystem.position.z += 0.8 + p * 22;
+                if (starSystem.position.z > 175) starSystem.position.z = -175;
+
+                // Titles zoom subtly
+                titlesEl.style.transform = `translate(-50%,-50%) scale(${1 + p * 0.12})`;
+
+                // Fade in rain subtly during approach
+                if (p > 0.3) {
+                    rainCanvas.style.opacity = ((p - 0.3) / 0.7 * 0.25).toFixed(3);
+                }
+
+                // ── PHASE 2: FLASH TRANSITION ──
+            } else if (t < LOAD_TIME + FLASH_DUR) {
+                const tp = (t - LOAD_TIME) / FLASH_DUR;
+                flashEl.style.opacity = Math.sin(tp * Math.PI);
+
+                if (tp > 0.5 && !isTransitioned) {
+                    isTransitioned = true;
+                    rainPhase = 'matrix';
+
+                    voidGroup.visible = false;
+                    matrixGroup.visible = true;
+                    scene.fog.color.setHex(0x000804);
+                    scene.fog.density = 0.008;
+
+                    camera.position.set(0, 110, 0);
+                    camera.rotation.set(-Math.PI / 2, 0, 0);
+
+                    bloom.strength = 3.0;
+                    hudEl.style.display = 'none';
+
+                    // Full rain visibility
+                    rainCanvas.style.transition = 'opacity 0.8s ease';
+                    rainCanvas.style.opacity = '0.55';
+
+                    titlesEl.style.transform = 'translate(-50%, -60%) scale(1.08)';
+                }
+
+                // ── PHASE 3: MATRIX FALL ──
+            } else {
+                const phase3T = t - (LOAD_TIME + FLASH_DUR);
+
+                // Trigger text reveal once
+                if (!window._textRevealed) {
+                    window._textRevealed = true;
+                    revealTitles();
+                }
+
+                if (phase3T > 2.5 && enterBtn.style.display !== 'block') {
+                    enterBtn.style.display = 'block';
+                    requestAnimationFrame(() => enterBtn.style.opacity = '1');
+                }
+
+                // Infinite fall
+                camera.position.y -= 0.45;
+                camera.rotation.z += 0.0008;
+                if (camera.position.y < -110) camera.position.y = 110;
+
+                codeLines.position.y += 1.0;
+                if (codeLines.position.y > 110) codeLines.position.y = 0;
+
+                monoliths.rotation.y = t * 0.04;
+                ptLight.intensity = 2 + Math.sin(t * 2) * 1;
+
+                bloom.strength = 1.9 + Math.sin(t * 2.5) * 0.45;
+            }
+
+            composer.render();
+        }
+
+        // ── TEXT REVEAL FUNCTION ──────────────────────────
+        function revealTitles() {
+            const h1Text = 'INTO THE VOID 2.0';
+            const h2Text = 'MULTIVERSE OF THE MATRIX';
+            const h1El = document.getElementById('title-h1');
+            const h2El = document.getElementById('title-h2');
+            const divEl = document.getElementById('title-divider');
+            const tagEl = document.getElementById('title-tagline');
+
+            // Build spans for h1
+            h1El.innerHTML = h1Text.split('').map(c =>
+                `<span class="char">${c === ' ' ? '&nbsp;' : c}</span>`
+            ).join('');
+
+            // Build spans for h2
+            h2El.innerHTML = h2Text.split('').map(c =>
+                `<span class="char">${c === ' ' ? '&nbsp;' : c}</span>`
+            ).join('');
+
+            titlesEl.style.opacity = '1';
+            titlesEl.classList.add('revealed');
+
+            const h1Chars = h1El.querySelectorAll('.char');
+            const h2Chars = h2El.querySelectorAll('.char');
+
+            // Stagger h1 characters in
+            h1Chars.forEach((span, i) => {
+                setTimeout(() => {
+                    // Brief glitch: show a random char first
+                    const orig = span.innerText;
+                    const GLITCH_CHARS = '@#$%&*01アカサタ';
+                    span.classList.add('in');
+                    let flips = 0;
+                    const glitchId = setInterval(() => {
+                        if (flips < 3) {
+                            span.innerText = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+                            span.style.color = '#00dbe9';
+                            flips++;
+                        } else {
+                            clearInterval(glitchId);
+                            span.innerText = orig === '\u00a0' ? '\u00a0' : orig;
+                            span.style.color = '';
+                        }
+                    }, 50);
+                }, i * 55);
+            });
+
+            // h2 comes in after h1 finishes
+            const h1Delay = h1Chars.length * 55 + 200;
+            setTimeout(() => {
+                divEl.classList.add('in');
+            }, h1Delay - 100);
+
+            h2Chars.forEach((span, i) => {
+                setTimeout(() => {
+                    span.classList.add('in');
+                }, h1Delay + i * 40);
+            });
+
+            // Tagline fades in last
+            setTimeout(() => {
+                tagEl.classList.add('in');
+            }, h1Delay + h2Chars.length * 40 + 400);
+
+            // Add continuous glitch loop to h1 after full reveal
+            setTimeout(() => {
+                h1El.classList.add('glitch-loop');
+                h1El.style.animation = 'glitch 3.5s infinite, flicker 4s infinite';
+            }, h1Delay + h2Chars.length * 40 + 800);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = innerWidth / innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(innerWidth, innerHeight);
+            composer.setSize(innerWidth, innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+
+</html>

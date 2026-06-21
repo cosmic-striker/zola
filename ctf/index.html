@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="/styles.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="/assets/js/tailwind-config.js"></script>
+    <link href="/styles.css" rel="stylesheet" />
+    <link href="/styles.css" rel="stylesheet" />
+    <script src="/assets/js/register.js"></script>
+    <style>
+        /* ================================================
+           Shared card animations  (matches main page rhythm)
+           ================================================ */
+        .feedback-fade-in {
+            animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Spring pop — same feel as main-page card reveals */
+        @keyframes cardPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.86) translateY(28px);
+            }
+
+            65% {
+                opacity: 1;
+                transform: scale(1.025) translateY(-5px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .card-pop {
+            animation: cardPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* ================================================
+           OTP — Pill / circle digit inputs
+           ================================================ */
+        .otp-strip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .otp-sep {
+            color: rgba(255, 255, 255, 0.15);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            user-select: none;
+            padding-bottom: 4px;
+        }
+
+        @keyframes otpPop {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(1.18);
+            }
+
+            70% {
+                transform: scale(0.95);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .otp-box {
+            width: 54px;
+            height: 54px;
+            background-color: #0a0a0a !important;
+            background-image: none !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #e2e2e2 !important;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            caret-color: transparent;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s, transform 0.15s;
+        }
+
+        /* Kill browser autofill white flash */
+        .otp-box:-webkit-autofill,
+        .otp-box:-webkit-autofill:hover,
+        .otp-box:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 100px #0a0a0a inset !important;
+            -webkit-text-fill-color: #e2e2e2 !important;
+            caret-color: transparent;
+        }
+
+        .otp-box:focus {
+            border-color: rgba(0, 219, 233, 0.6);
+            box-shadow: 0 0 0 3px rgba(0, 219, 233, 0.12), 0 0 16px rgba(0, 219, 233, 0.3);
+            background-color: rgba(0, 219, 233, 0.06) !important;
+            color: #00dbe9 !important;
+        }
+
+        .otp-box.filled {
+            border-color: rgba(0, 219, 233, 0.5);
+            background-color: rgba(0, 219, 233, 0.08) !important;
+            color: #00dbe9 !important;
+            animation: otpPop 0.25s ease forwards;
+        }
+
+        /* Error shake */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-5px);
+            }
+
+            40% {
+                transform: translateX(5px);
+            }
+
+            60% {
+                transform: translateX(-3px);
+            }
+
+            80% {
+                transform: translateX(3px);
+            }
+        }
+
+        .otp-error-shake {
+            animation: shake 0.35s ease;
+        }
+
+        /* ================================================
+           Payment card — clean minimal receipt style
+           ================================================ */
+        .pay-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 0;
+        }
+
+        .pay-row+.pay-row {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .pay-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0 0;
+            margin-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Referral input */
+        .referral-input {
+            width: 100%;
+            background-color: #0d0d0d !important;
+            background-image: none !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: rgba(185, 202, 203, 0.85) !important;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.12em;
+            padding: 10px 14px;
+            outline: none;
+            text-transform: uppercase;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+
+        .referral-input::placeholder {
+            color: rgba(185, 202, 203, 0.25);
+            letter-spacing: 0.08em;
+        }
+
+        .referral-input:focus {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Kill browser autofill white flash on referral input */
+        .referral-input:-webkit-autofill,
+        .referral-input:-webkit-autofill:hover,
+        .referral-input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 100px #0d0d0d inset !important;
+            -webkit-text-fill-color: rgba(185, 202, 203, 0.85) !important;
+        }
+
+        .referral-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 99px;
+            font-size: 9px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .group.relative {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen font-body-md overflow-x-hidden">
+    <div class="scanline"></div>
+    <!-- TopNavBar -->
+    <!-- TopNavBar Placeholder -->
+
+    <!-- TopNavBar -->
+    <header class="liquid-navbar">
+        <div class="w-full max-w-[1080px] mx-auto px-4 md:px-6 h-12 flex items-center justify-between gap-4">
+            <!-- Brand Logo & Name -->
+            <!-- <a href="#home" class="flex items-center gap-2 shrink-0">
+                <div class="w-8 h-8 rounded-full border border-primary/40 bg-surface-container-lowest flex items-center justify-center shadow-[0_0_8px_rgba(0,219,233,0.2)]">
+                    <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">hive</span>
+                </div>
+                <span class="font-display-lg text-[10px] sm:text-xs md:text-sm font-black text-primary uppercase italic tracking-wider">Into the Void 2.0</span>
+            </a>
+             -->
+            <nav class="flex items-center gap-1 sm:gap-2 md:gap-4 lg:gap-6">
+                <a class="nav-link active text-primary border-b-2 border-primary-container pb-1 drop-shadow-[0_0_8px_#00dbe9] font-label-caps text-label-caps flex items-center justify-center"
+                    href="/home">
+                    <span class="material-symbols-outlined md:hidden text-lg">home</span>
+                    <span class="hidden md:inline">Home</span>
+                </a>
+                <a class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps flex items-center justify-center"
+                    href="/home#event">
+                    <span class="material-symbols-outlined md:hidden text-lg">event</span>
+                    <span class="hidden md:inline">Event</span>
+                </a>
+                <a class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps flex items-center justify-center"
+                    href="/home#registration">
+                    <span class="material-symbols-outlined md:hidden text-lg">app_registration</span>
+                    <span class="hidden md:inline">Registration</span>
+                </a>
+                <a class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps flex items-center justify-center"
+                    href="/home#hyper-inline">
+                    <span class="material-symbols-outlined md:hidden text-lg">category</span>
+                    <span class="hidden md:inline">Category</span>
+                </a>
+                <a class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps flex items-center justify-center"
+                    href="/home#sponsors">
+                    <span class="material-symbols-outlined md:hidden text-lg">workspace_premium</span>
+                    <span class="hidden md:inline">Sponsor</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+
+    <!-- SideNavBar Shell (Suppressed as this is a focused Task/Contact Page) -->
+    <main class="pt-32  pb-32 mb-20 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto min-h-screen">
+        <div class="max-w-6xl mx-auto">
+
+            <!-- Header -->
+            <div class="flex flex-col gap-2 mb-12 text-center">
+                <span class="font-label-caps text-label-caps tracking-[0.3em] uppercase text-secondary">
+                    Registration Node: 0x1A_CTF
+                </span>
+
+                <h1 class="font-display-lg text-headline-xl tracking-tighter italic"
+                    style="color:#00dbe9; text-shadow:0 0 20px rgba(0,219,233,.4);">
+                    CTF_REGISTRATION
+                </h1>
+            </div>
+
+            <!-- Glass Panel -->
+            <div class="glass-panel relative rounded-2xl border-t-2 border-primary p-10">
+
+                <!-- Status -->
+                <div class="absolute top-6 right-8 text-[10px] font-mono tracking-widest text-secondary/40">
+                    STATUS: UPLINK_READY
+                </div>
+
+                <!-- Tabs -->
+                <div id="formTabsWrapper" class="flex justify-center mb-16">
+
+                    <div class="tab-container">
+
+                        <button id="soloTab" type="button" class="tab-btn active-tab" onclick="switchTab('solo')">
+                            SOLO
+                        </button>
+
+                        <button id="teamTab" type="button" class="tab-btn" onclick="switchTab('team')">
+                            TEAM
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- SOLO FORM -->
+                <div id="soloForm">
+
+                    <form id="soloFormEl" class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div id="soloTeamNameContainer"
+                            class="md:col-span-2 group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden transition-all duration-300">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Team_Name
+                            </label>
+                            <input type="text" id="soloTeamName" placeholder="Enter Team Name"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                            <div id="soloTeamNameFeedback"
+                                class="px-4 pb-2 text-[11px] font-mono transition-all duration-300 hidden"></div>
+                        </div>
+                        <!-- Full Name -->
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Full_Name
+                            </label>
+                            <input type="text" placeholder="Enter your full name"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Gender
+                            </label>
+                            <select class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                                <option class="bg-black">Male</option>
+                                <option class="bg-black">Female</option>
+                                <option class="bg-black">Transgender</option>
+                                <option class="bg-black">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Email -->
+                        <div id="soloEmailContainer"
+                            class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden transition-all duration-300">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Email_ID
+                            </label>
+                            <input type="email" id="soloEmail" placeholder="user@domain.com"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                            <div id="soloEmailFeedback"
+                                class="px-4 pb-2 text-[11px] font-mono transition-all duration-300 hidden"></div>
+                        </div>
+
+                        <!-- Mobile -->
+                        <div id="soloPhoneContainer"
+                            class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden transition-all duration-300">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Mobile_Number
+                            </label>
+                            <div class="flex items-center">
+                                <input type="text" id="soloPhoneCC" placeholder="+91" value="+91"
+                                    class="bg-transparent border-none focus:ring-0 pl-4 pr-2 pb-4 text-primary w-20">
+                                <input type="tel" id="soloPhone" placeholder="9876543210" maxlength="10"
+                                    class="w-full bg-transparent border-none focus:ring-0 px-2 pb-4 text-primary">
+                            </div>
+                            <div id="soloPhoneFeedback"
+                                class="px-4 pb-2 text-[11px] font-mono transition-all duration-300 hidden"></div>
+                        </div>
+
+                        <!-- College -->
+                        <div class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                College_Name
+                            </label>
+
+                            <input id="collegeName" list="collegeList" placeholder="Select or type your college"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary outline-none" />
+
+                            <datalist id="collegeList">
+                                <option value="Chennai Institute of Technology"></option>
+
+                            </datalist>
+                        </div>
+                        <!-- Degree -->
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Degree
+                            </label>
+                            <input type="text" placeholder="B.Tech, B.E, B.Sc"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                        </div>
+
+                        <!-- Department -->
+                        <div class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Department
+                            </label>
+                            <input type="text" placeholder="Computer Science, IT"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                        </div>
+
+                        <!-- Year -->
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Year_of_Study
+                            </label>
+                            <select class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                                <option class="bg-black">Select Year</option>
+                                <option class="bg-black">1st Year</option>
+                                <option class="bg-black">2nd Year</option>
+                                <option class="bg-black">3rd Year</option>
+                                <option class="bg-black">4th Year</option>
+                                <option class="bg-black">5th Year</option>
+                            </select>
+                        </div>
+
+                        <!-- Location -->
+                        <div
+                            class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden md:col-span-2">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Location
+                            </label>
+                            <input type="text" placeholder="City / District"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="md:col-span-2 flex flex-col items-center pt-8">
+                            <div id="soloSubmitError"
+                                class="w-full max-w-md text-center text-red-500 font-mono text-[11px] mb-4 p-3 border border-red-500/30 bg-red-950/40 rounded-xl hidden feedback-fade-in">
+                            </div>
+                            <button type="submit"
+                                class="px-16 py-4 rounded-xl bg-primary-container text-on-primary-container uppercase tracking-[0.25em] font-bold shadow-[0_0_30px_rgba(0,219,233,.4)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(0,219,233,.6)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
+                                I'M READY TO HACK
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- TEAM FORM -->
+                <div id="teamForm" class="hidden">
+
+                    <form id="teamFormEl" class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                        <div id="teamTeamNameContainer"
+                            class="md:col-span-2 group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden transition-all duration-300">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Team_Name
+                            </label>
+                            <input type="text" id="teamTeamName" placeholder="Enter Team Name"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                            <div id="teamTeamNameFeedback"
+                                class="px-4 pb-2 text-[11px] font-mono transition-all duration-300 hidden"></div>
+                        </div>
+
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Team_Leader
+                            </label>
+                            <input type="text" placeholder="Leader Name"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                        </div>
+
+                        <div id="teamLeaderEmailContainer"
+                            class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden transition-all duration-300">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Leader_Email
+                            </label>
+                            <input type="email" id="teamLeaderEmail" placeholder="leader@domain.com"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                            <div id="teamLeaderEmailFeedback"
+                                class="px-4 pb-2 text-[11px] font-mono transition-all duration-300 hidden"></div>
+                        </div>
+                        <div
+                            class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden md:col-span-2">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Location
+                            </label>
+                            <input type="text" placeholder="City / District"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                        </div>
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Year_of_Study
+                            </label>
+                            <select class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                                <option class="bg-black">Select Year</option>
+                                <option class="bg-black">1st Year</option>
+                                <option class="bg-black">2nd Year</option>
+                                <option class="bg-black">3rd Year</option>
+                                <option class="bg-black">4th Year</option>
+                            </select>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Gender
+                            </label>
+                            <select class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                                <option class="bg-black">Male</option>
+                                <option class="bg-black">Female</option>
+                                <option class="bg-black">Transgender</option>
+                                <option class="bg-black">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Mobile -->
+                        <div id="teamLeaderPhoneContainer"
+                            class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden transition-all duration-300">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Mobile_Number
+                            </label>
+                            <div class="flex items-center">
+                                <input type="text" id="teamLeaderPhoneCC" placeholder="+91" value="+91"
+                                    class="bg-transparent border-none focus:ring-0 pl-4 pr-2 pb-4 text-primary w-20">
+                                <input type="tel" id="teamLeaderPhone" placeholder="9876543210" maxlength="10"
+                                    class="w-full bg-transparent border-none focus:ring-0 px-2 pb-4 text-primary">
+                            </div>
+                            <div id="teamLeaderPhoneFeedback"
+                                class="px-4 pb-2 text-[11px] font-mono transition-all duration-300 hidden"></div>
+                        </div>
+
+                        <!-- College -->
+                        <div class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                College_Name
+                            </label>
+
+                            <input id="collegeName" list="collegeList" placeholder="Select or type your college"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary outline-none" />
+
+                            <datalist id="collegeList">
+                                <option value="Chennai Institute of Technology"></option>
+                            </datalist>
+                        </div>
+
+                        <!-- Degree -->
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Degree
+                            </label>
+                            <input type="text" placeholder="B.Tech, B.E, B.Sc"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                        </div>
+
+                        <!-- Department -->
+                        <div class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Department
+                            </label>
+                            <input type="text" placeholder="Computer Science, IT"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                        </div>
+                        <div
+                            class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden md:col-span-2">
+
+                        </div>
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Team_Member
+                            </label>
+                            <input type="text" placeholder="Team Member Name"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                        </div>
+
+                        <div id="teamMemberEmailContainer"
+                            class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden transition-all duration-300">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Member_Email
+                            </label>
+                            <input type="email" id="teamMemberEmail" placeholder="member@domain.com"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                            <div id="teamMemberEmailFeedback"
+                                class="px-4 pb-2 text-[11px] font-mono transition-all duration-300 hidden"></div>
+                        </div>
+                        <div
+                            class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden md:col-span-2">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Location
+                            </label>
+                            <input type="text" placeholder="City / District"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                        </div>
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Year_of_Study
+                            </label>
+                            <select class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                                <option class="bg-black">Select Year</option>
+                                <option class="bg-black">1st Year</option>
+                                <option class="bg-black">2nd Year</option>
+                                <option class="bg-black">3rd Year</option>
+                                <option class="bg-black">4th Year</option>
+                            </select>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Gender
+                            </label>
+                            <select class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                                <option class="bg-black">Male</option>
+                                <option class="bg-black">Female</option>
+                                <option class="bg-black">Transgender</option>
+                                <option class="bg-black">Other</option>
+                            </select>
+                        </div>
+
+
+                        <!-- Mobile -->
+                        <div id="teamMemberPhoneContainer"
+                            class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden transition-all duration-300">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Mobile_Number
+                            </label>
+                            <div class="flex items-center">
+                                <input type="text" id="teamMemberPhoneCC" placeholder="+91" value="+91"
+                                    class="bg-transparent border-none focus:ring-0 pl-4 pr-2 pb-4 text-primary w-20">
+                                <input type="tel" id="teamMemberPhone" placeholder="9876543210" maxlength="10"
+                                    class="w-full bg-transparent border-none focus:ring-0 px-2 pb-4 text-primary">
+                            </div>
+                            <div id="teamMemberPhoneFeedback"
+                                class="px-4 pb-2 text-[11px] font-mono transition-all duration-300 hidden"></div>
+                        </div>
+
+                        <!-- College -->
+                        <div class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                College_Name
+                            </label>
+
+                            <input id="collegeName" list="collegeList" placeholder="Select or type your college"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary outline-none" />
+
+                            <datalist id="collegeList">
+                                <option value="Chennai Institute of Technology"></option>
+                            </datalist>
+                        </div>
+                        <!-- Degree -->
+                        <div class="group relative border border-primary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-cyan-400/70">
+                                Degree
+                            </label>
+                            <input type="text" placeholder="B.Tech, B.E, B.Sc"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-primary">
+                        </div>
+
+                        <!-- Department -->
+                        <div class="group relative border border-secondary/30 rounded-xl bg-black/40 overflow-hidden">
+                            <label
+                                class="block px-4 pt-3 mb-2 text-[10px] uppercase tracking-widest text-purple-400/70">
+                                Department
+                            </label>
+                            <input type="text" placeholder="Computer Science, IT"
+                                class="w-full bg-transparent border-none focus:ring-0 px-4 pb-4 text-secondary">
+                        </div>
+
+                        <div class="md:col-span-2 flex flex-col items-center pt-8">
+                            <div id="teamSubmitError"
+                                class="w-full max-w-md text-center text-red-500 font-mono text-[11px] mb-4 p-3 border border-red-500/30 bg-red-950/40 rounded-xl hidden feedback-fade-in">
+                            </div>
+                            <button type="submit"
+                                class="px-16 py-4 rounded-xl bg-primary-container text-on-primary-container uppercase tracking-[0.25em] font-bold shadow-[0_0_30px_rgba(0,219,233,.4)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(0,219,233,.6)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
+                                REGISTER_TEAM
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- OTP CARD -->
+                <div id="otpCard" class="hidden flex-col items-center justify-center py-14 gap-10">
+
+                    <div class="text-center">
+                        <p class="text-[9px] font-mono tracking-[0.4em] uppercase mb-3"
+                            style="color:rgba(0,219,233,0.4);">VERIFICATION NODE</p>
+                        <h2 class="font-display-lg text-4xl tracking-tighter italic mb-2"
+                            style="color:#00dbe9; text-shadow:0 0 28px rgba(0,219,233,.5);">
+                            VERIFY_UPLINK
+                        </h2>
+                        <p class="font-mono text-xs" style="color:rgba(185,202,203,0.45);">6-digit code sent to your
+                            registered contact</p>
+                    </div>
+
+                    <div class="w-40 h-px"
+                        style="background:linear-gradient(90deg,transparent,rgba(0,219,233,0.4),transparent);"></div>
+
+                    <!-- LEADER / SOLO OTP -->
+                    <div id="leaderOtpSection"
+                        class="flex flex-col items-center gap-5 w-full bg-black/40 border border-primary/20 rounded-2xl p-8 relative overflow-hidden group hover:border-primary/40 transition-colors duration-500">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                        </div>
+                        <div class="flex flex-col items-center text-center gap-1 z-10">
+                            <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-primary/70">Terminal 1:
+                                Primary</span>
+                            <p class="font-mono text-xs" style="color:rgba(185,202,203,0.6);">
+                                Code sent to: <span id="leaderOtpEmailLabel"
+                                    class="text-[#00dbe9] font-bold tracking-wider"></span>
+                            </p>
+                        </div>
+                        <div id="otpBoxes" class="otp-strip z-10">
+                            <input class="otp-box" id="otp0" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" autocomplete="one-time-code" />
+                            <input class="otp-box" id="otp1" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                            <input class="otp-box" id="otp2" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                            <span class="otp-sep">·</span>
+                            <input class="otp-box" id="otp3" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                            <input class="otp-box" id="otp4" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                            <input class="otp-box" id="otp5" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                        </div>
+                        <button type="button" id="leaderResendBtn" onclick="resendOtp('leader')"
+                            class="mt-2 text-[10px] font-mono tracking-widest text-[#00dbe9]/60 hover:text-[#00dbe9] transition-colors duration-300 disabled:opacity-40 disabled:cursor-not-allowed uppercase z-10 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px]">refresh</span>
+                            <span>Resend Code <span id="leaderResendTimer"></span></span>
+                        </button>
+                    </div>
+
+                    <!-- MEMBER OTP (Hidden by default) -->
+                    <div id="memberOtpSection"
+                        class="hidden flex-col items-center gap-5 w-full bg-black/40 border border-primary/20 rounded-2xl p-8 relative overflow-hidden group hover:border-primary/40 transition-colors duration-500">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                        </div>
+                        <div class="flex flex-col items-center text-center gap-1 z-10">
+                            <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-primary/70">Terminal 2:
+                                Secondary</span>
+                            <p class="font-mono text-xs" style="color:rgba(185,202,203,0.6);">
+                                Code sent to: <span id="memberOtpEmailLabel"
+                                    class="text-[#00dbe9] font-bold tracking-wider"></span>
+                            </p>
+                        </div>
+                        <div id="memberOtpBoxes" class="otp-strip z-10">
+                            <input class="otp-box" id="motp0" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" autocomplete="one-time-code" />
+                            <input class="otp-box" id="motp1" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                            <input class="otp-box" id="motp2" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                            <span class="otp-sep">·</span>
+                            <input class="otp-box" id="motp3" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                            <input class="otp-box" id="motp4" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                            <input class="otp-box" id="motp5" maxlength="1" type="text" inputmode="numeric"
+                                pattern="[0-9]" />
+                        </div>
+                        <button type="button" id="memberResendBtn" onclick="resendOtp('member')"
+                            class="mt-2 text-[10px] font-mono tracking-widest text-[#00dbe9]/60 hover:text-[#00dbe9] transition-colors duration-300 disabled:opacity-40 disabled:cursor-not-allowed uppercase z-10 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px]">refresh</span>
+                            <span>Resend Code <span id="memberResendTimer"></span></span>
+                        </button>
+                    </div>
+
+                    <div id="otpError"
+                        class="hidden font-mono text-xs tracking-widest px-4 py-2 bg-red-950/40 border border-red-500/30 rounded-lg"
+                        style="color:#ffb4ab;">⚠ INVALID
+                        CODE — RETRY</div>
+
+                    <button onclick="verifyOtp()" type="button"
+                        class="px-16 py-4 rounded-xl font-body-md font-bold uppercase tracking-[0.3em] transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] flex items-center justify-center gap-3 w-full max-w-sm mt-4"
+                        style="background:rgba(0,219,233,0.1); color:#00dbe9; border:1.5px solid rgba(0,219,233,0.35); box-shadow:0 0 24px rgba(0,219,233,0.2);">
+                        <span class="material-symbols-outlined text-lg">admin_panel_settings</span>
+                        <span>VERIFY UPLINK</span>
+                    </button>
+
+                </div>
+
+                <!-- PAYMENT CARD — clean minimal receipt -->
+                <div id="paymentCard"
+                    class="hidden flex-col items-center justify-center py-10 gap-6 w-full max-w-md mx-auto">
+
+                    <div class="text-center">
+                        <p class="text-[9px] font-mono tracking-[0.35em] uppercase mb-2"
+                            style="color:rgba(185,202,203,0.35);">PAYMENT SUMMARY</p>
+                        <h2 class="font-display-lg text-3xl tracking-tighter italic" style="color:#e2e2e2;">ORDER
+                            RECEIPT</h2>
+                    </div>
+
+                    <!-- Receipt panel -->
+                    <div class="w-full rounded-2xl overflow-hidden"
+                        style="background:#0e0e0e; border:1px solid rgba(255,255,255,0.08); box-shadow:0 8px 40px rgba(0,0,0,0.6);">
+
+                        <!-- Identity row -->
+                        <div class="px-6 py-4 flex items-center justify-between"
+                            style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined"
+                                    style="color:rgba(0,219,233,0.6); font-size:1.2rem;">person</span>
+                                <div>
+                                    <p class="text-[9px] uppercase tracking-[0.2em] font-mono"
+                                        style="color:rgba(185,202,203,0.35);">PARTICIPANT</p>
+                                    <p id="payName" class="font-bold font-mono text-sm" style="color:#e2e2e2;">—</p>
+                                </div>
+                            </div>
+                            <span
+                                class="font-mono text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"
+                                style="background:rgba(0,219,233,0.08); color:rgba(0,219,233,0.7); border:1px solid rgba(0,219,233,0.18);">EARLY
+                                BIRD</span>
+                        </div>
+
+                        <!-- Fee rows -->
+                        <div class="px-6 py-5 font-mono text-sm">
+                            <p class="text-[9px] uppercase tracking-[0.2em] mb-4" style="color:rgba(185,202,203,0.3);">
+                                FEE BREAKDOWN</p>
+
+                            <div class="pay-row">
+                                <span style="color:rgba(185,202,203,0.5);">Original Fee</span>
+                                <span id="payOriginal" style="color:rgba(185,202,203,0.65);">₹ 400</span>
+                            </div>
+                            <div class="pay-row">
+                                <span style="color:rgba(185,202,203,0.5);">Early Bird Discount</span>
+                                <span id="payDiscount" style="color:#4ade80;">- ₹ 200</span>
+                            </div>
+                            <div class="pay-total-row">
+                                <span class="font-bold uppercase tracking-wider" style="color:#e2e2e2;">Total Due</span>
+                                <span id="payTotal" class="font-bold text-2xl" style="color:#e2e2e2;">₹ 200</span>
+                            </div>
+                        </div>
+
+                        <!-- Referral row -->
+                        <div class="px-6 py-4"
+                            style="border-top:1px solid rgba(255,255,255,0.06); background:rgba(0,0,0,0.3);">
+                            <p class="text-[9px] uppercase tracking-[0.2em] font-mono mb-3"
+                                style="color:rgba(185,202,203,0.3);">
+                                Referral Code <span style="color:rgba(185,202,203,0.2);">(optional)</span>
+                            </p>
+                            <div class="flex gap-2 items-center">
+                                <input id="referralCode" type="text" placeholder="ENTER CODE" maxlength="20"
+                                    class="referral-input flex-1" />
+                                <button onclick="applyReferral()" type="button"
+                                    class="shrink-0 px-4 py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 hover:scale-105 active:scale-95"
+                                    style="background:rgba(255,255,255,0.05); color:rgba(185,202,203,0.7); border:1px solid rgba(255,255,255,0.1); white-space:nowrap;">
+                                    APPLY
+                                </button>
+                            </div>
+                            <p id="referralStatus" class="hidden mt-2 font-mono text-[10px] tracking-wider"></p>
+                        </div>
+
+                    </div>
+
+                    <!-- Pay button -->
+                    <button onclick="processPayment()" type="button"
+                        class="w-full py-4 rounded-xl font-body-md font-bold uppercase tracking-[0.3em] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
+                        style="background:#00dbe9; color:#001f22; box-shadow:0 4px 24px rgba(0,219,233,0.25);">
+                        PROCEED TO PAY
+                    </button>
+                    <p id="paymentError" class="hidden mt-3 font-mono text-[11px] tracking-wider text-center"
+                        style="color:#ff6b6b;"></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+    <footer class="w-full bg-black/95 border-t border-primary/20 py-10">
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col lg:flex-row items-center justify-between gap-8">
+            <a class="flex items-center gap-4 group" data-env="CLUB_URL" href="https://www.exploitx.org"
+                aria-label="ExploitX official club page">
+                <img src="/assets/images/exploitx-logo.png" alt="ExploitX club logo"
+                    class="w-12 h-12 rounded-full border border-primary/30 bg-black/40 object-contain" />
+                <div class="flex flex-col">
+                    <span
+                        class="text-primary font-bold font-display-lg text-sm uppercase tracking-wider">ExploitX</span>
+                    <span class="text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">Official
+                        club page</span>
+                </div>
+            </a>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="INSTAGRAM_URL" href="https://www.instagram.com/exploitxorg" aria-label="Instagram">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Instagram</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="LINKEDIN_URL" href="https://www.linkedin.com/company/exploitxorg/" aria-label="LinkedIn">
+                    <span class="material-symbols-outlined text-base">work</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="X_URL" href="https://twitter.com/exploitxorg" aria-label="X">
+                    <span class="material-symbols-outlined text-base">close</span>
+                    <span>X</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="REDDIT_URL" href="https://www.reddit.com/user/exploitxorg" aria-label="Reddit">
+                    <span class="material-symbols-outlined text-base">forum</span>
+                    <span>Reddit</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="GITHUB_URL" href="https://github.com/exploitx-org" aria-label="GitHub">
+                    <span class="material-symbols-outlined text-base">code</span>
+                    <span>GitHub</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MASTODON_URL" href="https://mastodon.social/@exploitxorg" aria-label="Mastodon">
+                    <span class="material-symbols-outlined text-base">hub</span>
+                    <span>Mastodon</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MAIL_URL" href="mailto:exploitx@citchennai.net" aria-label="Email">
+                    <span class="material-symbols-outlined text-base">mail</span>
+                    <span>Mail</span>
+                </a>
+            </div>
+        </div>
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop mt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">
+            <div>© 2124 MULTIVERSE_CORE. ALL RIGHTS RESERVED. [RESTRICTED ACCESS]</div>
+            <div class="flex flex-wrap items-center justify-center gap-6">
+                <a class="hover:text-primary transition-all" href="/terms">PROTOCOL_TC</a>
+
+                <a class="hover:text-primary transition-all" href="/privacy">PRIVACY_ENCRYPT</a>
+                <a class="hover:text-primary transition-all" href="/sitemap">SITEMAP_DIR</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/assets/js/footer-links.js"></script>
+
+    <script src="/assets/js/navbar.js"></script>
+    <script>
+        // Live Verification API integration and field validations
+
+        let BACKEND_URL = "https://auth.void.exploitx.org/";
+
+        // Cache for verified items: type -> query -> result
+        const verificationCache = {
+            team_name: {},
+            email: {},
+            mobile: {}
+        };
+
+        // Tracking active AbortController requests per field to allow cancelling outdated queries
+        const activeRequests = {};
+        // Debounce timers per field
+        const debounceTimers = {};
+
+        // Validation state dictionary
+        const fieldStates = {
+            soloTeamName: {status: 'default', value: '', error: ''},
+            soloEmail: {status: 'default', value: '', error: ''},
+            soloPhone: {status: 'default', value: '', error: ''},
+
+            teamTeamName: {status: 'default', value: '', error: ''},
+            teamLeaderEmail: {status: 'default', value: '', error: ''},
+            teamLeaderPhone: {status: 'default', value: '', error: ''},
+            teamMemberEmail: {status: 'default', value: '', error: ''},
+            teamMemberPhone: {status: 'default', value: '', error: ''}
+        };
+
+        const fieldsConfig = {
+            soloTeamName: {type: 'team_name', label: 'Team Name'},
+            soloEmail: {type: 'email', label: 'Email Address'},
+            soloPhone: {type: 'mobile', label: 'Phone Number'},
+
+            teamTeamName: {type: 'team_name', label: 'Team Name'},
+            teamLeaderEmail: {type: 'email', label: 'Leader Email'},
+            teamLeaderPhone: {type: 'mobile', label: 'Leader Phone Number'},
+            teamMemberEmail: {type: 'email', label: 'Member Email'},
+            teamMemberPhone: {type: 'mobile', label: 'Member Phone Number'}
+        };
+
+        // Format validation helpers matching backend logic
+        function validateTeamName(value) {
+            if (!value || value.length < 1 || value.length > 100) {
+                return "Team name must be between 1 and 100 characters.";
+            }
+            if (!/^[a-zA-Z0-9\s\-_]+$/.test(value)) {
+                return "Team name can only contain letters, digits, spaces, hyphens, and underscores.";
+            }
+            return null;
+        }
+
+        function validateEmail(value) {
+            value = value.trim();
+            if (!value) return "Email must not be empty.";
+            const parts = value.split('@');
+            if (parts.length !== 2 || parts[0].length === 0) {
+                return "Email must be in the format name@domain.tld.";
+            }
+            const local = parts[0];
+            const domain = parts[1];
+            if (local.length > 64) {
+                return "Email local part must be at most 64 characters.";
+            }
+            if (!/^[a-zA-Z0-9\.!\#$%&'\*\+\-\/=\?\^_`\{\|\}\~]+$/.test(local)) {
+                return "Email local part contains invalid characters.";
+            }
+            if (domain.length > 255) {
+                return "Email domain must be at most 255 characters.";
+            }
+            if (!domain.includes('.')) {
+                return "Email must have a valid domain with TLD (e.g., name@example.com).";
+            }
+            if (domain.startsWith('.') || domain.endsWith('.')) {
+                return "Email domain must not start or end with a dot.";
+            }
+            if (!/^[a-zA-Z0-9\.\-]+$/.test(domain)) {
+                return "Email domain contains invalid characters.";
+            }
+            return null;
+        }
+
+        function validatePhone(cc, number) {
+            if (!cc || !cc.startsWith('+')) {
+                return "Mobile country code must start with + (e.g., +91).";
+            }
+            if (!number || number.length !== 10 || !/^\d+$/.test(number)) {
+                return "Mobile number must be exactly 10 digits.";
+            }
+            return null;
+        }
+
+        // Update UI elements based on validation state
+        function updateFieldUI(fieldId, state, message, details = null) {
+            const container = document.getElementById(fieldId + 'Container');
+            const feedback = document.getElementById(fieldId + 'Feedback');
+            if (!container || !feedback) return;
+
+            // Remove styling state classes
+            container.classList.remove('border-primary/30', 'border-secondary/30', 'border-red-500/50', 'border-green-500/50', 'border-yellow-500/50');
+            container.classList.remove('shadow-[0_0_15px_rgba(239,68,68,0.2)]', 'shadow-[0_0_15px_rgba(34,197,94,0.2)]', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
+
+            const isSecondary = container.classList.contains('border-secondary') || container.querySelector('label').classList.contains('text-purple-400/70');
+            const defaultBorderClass = isSecondary ? 'border-secondary/30' : 'border-primary/30';
+
+            if (state === 'default') {
+                container.classList.add(defaultBorderClass);
+                feedback.classList.add('hidden');
+                feedback.innerHTML = '';
+            } else if (state === 'typing' || state === 'checking') {
+                container.classList.add('border-yellow-500/50');
+                container.classList.add('shadow-[0_0_15px_rgba(234,179,8,0.2)]');
+                feedback.classList.remove('hidden');
+                feedback.className = "px-4 pb-2 text-[11px] font-mono text-yellow-400 transition-all duration-300 feedback-fade-in";
+                feedback.innerHTML = `
+                <span class="inline-flex items-center gap-2">
+                    <svg class="animate-spin h-3 w-3 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Checking availability...
+                </span>`;
+            } else if (state === 'available') {
+                container.classList.add('border-green-500/50');
+                container.classList.add('shadow-[0_0_15px_rgba(34,197,94,0.2)]');
+                feedback.classList.remove('hidden');
+                feedback.className = "px-4 pb-2 text-[11px] font-mono text-green-400 transition-all duration-300 feedback-fade-in";
+                feedback.innerHTML = message;
+            } else if (state === 'error' || state === 'invalid' || state === 'network_error') {
+                container.classList.add('border-red-500/50');
+                container.classList.add('shadow-[0_0_15px_rgba(239,68,68,0.2)]');
+                feedback.classList.remove('hidden');
+                feedback.className = "px-4 pb-2 text-[11px] font-mono text-red-400 transition-all duration-300 feedback-fade-in";
+
+                let html = message;
+                if (details) {
+                    html += `<div class="mt-1 pl-3 border-l border-red-500/30 text-[10px] text-gray-400 leading-relaxed">${details}</div>`;
+                }
+                feedback.innerHTML = html;
+            }
+        }
+
+        // Main verification logic with aborting and debouncing
+        function performVerification(fieldId) {
+            const inputEl = document.getElementById(fieldId);
+            const value = inputEl ? inputEl.value.trim() : '';
+            const config = fieldsConfig[fieldId];
+            if (!config) return;
+
+            // Clear existing debounce and abort active fetches for this field
+            if (debounceTimers[fieldId]) clearTimeout(debounceTimers[fieldId]);
+            if (activeRequests[fieldId]) {
+                activeRequests[fieldId].abort();
+                activeRequests[fieldId] = null;
+            }
+
+            if (value === '') {
+                fieldStates[fieldId] = {status: 'default', value: '', error: ''};
+                updateFieldUI(fieldId, 'default');
+                return;
+            }
+
+            let cc = '';
+            if (config.type === 'mobile') {
+                const ccEl = document.getElementById(fieldId + 'CC');
+                if (ccEl) cc = ccEl.value;
+                if (value.length !== 10) {
+                    fieldStates[fieldId] = {status: 'default', value: value, error: ''};
+                    updateFieldUI(fieldId, 'default');
+                    return;
+                }
+            }
+
+            // Format validation check
+            let validationError = null;
+            if (config.type === 'team_name') validationError = validateTeamName(value);
+            else if (config.type === 'email') validationError = validateEmail(value);
+            else if (config.type === 'mobile') validationError = validatePhone(cc, value);
+
+            if (validationError) {
+                fieldStates[fieldId] = {status: 'invalid', value: value, error: validationError};
+                updateFieldUI(fieldId, 'invalid', `⚠ ${validationError}`);
+                return;
+            }
+
+            // Show typing/checking status immediately
+            fieldStates[fieldId] = {status: 'typing', value: value, error: ''};
+            updateFieldUI(fieldId, 'typing');
+
+            // Debounce actual API request (1000ms for team_name, 400ms otherwise)
+            const delay = config.type === 'team_name' ? 1000 : 400;
+            debounceTimers[fieldId] = setTimeout(async () => {
+                fieldStates[fieldId].status = 'checking';
+                updateFieldUI(fieldId, 'checking');
+
+                // Format cache key
+                const cacheKey = config.type === 'mobile' ? JSON.stringify({cc, number: value}) : value;
+                const cached = verificationCache[config.type][cacheKey];
+                if (cached !== undefined) {
+                    if (cached.found) {
+                        fieldStates[fieldId] = {status: 'error', value: value, error: cached.error, details: cached.details};
+                        updateFieldUI(fieldId, 'error', cached.error, cached.details);
+                    } else {
+                        fieldStates[fieldId] = {status: 'available', value: value, error: ''};
+                        updateFieldUI(fieldId, 'available', `✅ ${config.label} is available`);
+                    }
+                    return;
+                }
+
+                const controller = new AbortController();
+                activeRequests[fieldId] = controller;
+
+                try {
+                    let requestBody;
+                    if (config.type === 'mobile') {
+                        requestBody = {type: 'mobile', query: {cc, number: value}};
+                    } else {
+                        requestBody = {type: config.type, query: value};
+                    }
+
+                    const response = await fetch(BACKEND_URL + "_/api/v1/pub/preflight", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(requestBody),
+                        signal: controller.signal
+                    });
+
+                    activeRequests[fieldId] = null;
+
+                    if (response.status === 422) {
+                        const errData = await response.json();
+                        const msg = errData.message || `Invalid ${config.label} format.`;
+                        fieldStates[fieldId] = {status: 'invalid', value: value, error: msg};
+                        updateFieldUI(fieldId, 'invalid', `⚠ ${msg}`);
+                        verificationCache[config.type][cacheKey] = {found: true, error: `⚠ ${msg}`, details: ''};
+                        return;
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    if (data.found) {
+                        const errMsg = `❌ ${config.label} already registered`;
+
+                        // Parse metadata if available
+                        const detailsArr = [];
+                        if (data.team_name) detailsArr.push(`Team: ${data.team_name}`);
+                        if (data.registration_type) detailsArr.push(`Type: ${data.registration_type}`);
+                        if (data.payment_status) detailsArr.push(`Payment: ${data.payment_status}`);
+
+                        const vStatus = data.leader_status || data.member_status || (data.leader_verified ? 'verified' : 'pending');
+                        if (vStatus) detailsArr.push(`Verification: ${vStatus}`);
+                        const detailsStr = detailsArr.length > 0 ? detailsArr.join(' | ') : '';
+
+                        fieldStates[fieldId] = {status: 'error', value: value, error: errMsg, details: detailsStr};
+                        updateFieldUI(fieldId, 'error', errMsg, detailsStr);
+                        verificationCache[config.type][cacheKey] = {found: true, error: errMsg, details: detailsStr};
+                    } else {
+                        fieldStates[fieldId] = {status: 'available', value: value, error: ''};
+                        updateFieldUI(fieldId, 'available', `✅ ${config.label} is available`);
+                        verificationCache[config.type][cacheKey] = {found: false};
+                    }
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    activeRequests[fieldId] = null;
+                    console.error("Verification Error:", err);
+
+                    let errMsg = err.message;
+                    if (errMsg === "Failed to fetch") {
+                        errMsg += " (This is usually a CORS issue or the backend isn't running)";
+                    }
+                    if (BACKEND_URL === "") {
+                        errMsg = "BACKEND_URL is empty. The .env file failed to load.";
+                    }
+
+                    fieldStates[fieldId] = {status: 'network_error', value: value, error: errMsg};
+                    updateFieldUI(fieldId, 'network_error', `⚠ Network Error: ${errMsg}`);
+                }
+            }, 400);
+        }
+
+        // Validate form prior to final submission
+        function validateFormBeforeSubmit(formType) {
+            const fieldsToValidate = formType === 'solo'
+                ? ['soloTeamName', 'soloEmail', 'soloPhone']
+                : ['teamTeamName', 'teamLeaderEmail', 'teamLeaderPhone', 'teamMemberEmail', 'teamMemberPhone'];
+
+            let firstInvalidField = null;
+            let errorMessage = '';
+
+            for (const fieldId of fieldsToValidate) {
+                const inputEl = document.getElementById(fieldId);
+                const val = inputEl ? inputEl.value.trim() : '';
+                const state = fieldStates[fieldId];
+
+                if (val === '') {
+                    fieldStates[fieldId] = {status: 'invalid', value: '', error: 'Required field.'};
+                    updateFieldUI(fieldId, 'invalid', `⚠ ${fieldsConfig[fieldId].label} is required.`);
+                    if (!firstInvalidField) firstInvalidField = inputEl;
+                    if (!errorMessage) errorMessage = `Submission blocked: ${fieldsConfig[fieldId].label} is required.`;
+                    continue;
+                }
+
+                // If input changed or was never checked
+                if (state.status === 'default' || state.value !== val) {
+                    let formatError = null;
+                    const config = fieldsConfig[fieldId];
+                    if (config.type === 'team_name') formatError = validateTeamName(val);
+                    else if (config.type === 'email') formatError = validateEmail(val);
+                    else if (config.type === 'mobile') {
+                        const ccEl = document.getElementById(fieldId + 'CC');
+                        formatError = validatePhone(ccEl ? ccEl.value : '', val);
+                    }
+
+                    if (formatError) {
+                        fieldStates[fieldId] = {status: 'invalid', value: val, error: formatError};
+                        updateFieldUI(fieldId, 'invalid', `⚠ ${formatError}`);
+                        if (!firstInvalidField) firstInvalidField = inputEl;
+                        if (!errorMessage) errorMessage = `Submission blocked: ${fieldsConfig[fieldId].label} has invalid format.`;
+                    } else {
+                        // Start checking
+                        fieldStates[fieldId] = {status: 'checking', value: val, error: ''};
+                        updateFieldUI(fieldId, 'checking');
+                        performVerification(fieldId);
+                        if (!firstInvalidField) firstInvalidField = inputEl;
+                        if (!errorMessage) errorMessage = `Submission blocked: Checking ${fieldsConfig[fieldId].label} availability. Please wait.`;
+                    }
+                    continue;
+                }
+
+                // Inspect validation results
+                if (state.status === 'typing' || state.status === 'checking') {
+                    if (!firstInvalidField) firstInvalidField = inputEl;
+                    if (!errorMessage) errorMessage = `Submission blocked: Checking ${fieldsConfig[fieldId].label} availability. Please wait.`;
+                } else if (state.status === 'invalid') {
+                    if (!firstInvalidField) firstInvalidField = inputEl;
+                    if (!errorMessage) errorMessage = `Submission blocked: ${fieldsConfig[fieldId].label} has invalid format.`;
+                } else if (state.status === 'error') {
+                    if (!firstInvalidField) firstInvalidField = inputEl;
+                    if (!errorMessage) errorMessage = `Submission blocked: ${fieldsConfig[fieldId].label} is already registered.`;
+                } else if (state.status === 'network_error') {
+                    if (!firstInvalidField) firstInvalidField = inputEl;
+                    if (!errorMessage) errorMessage = `Submission blocked: Verification server connection failed. Please retry.`;
+                }
+            }
+
+            const bannerId = formType === 'solo' ? 'soloSubmitError' : 'teamSubmitError';
+            const banner = document.getElementById(bannerId);
+
+            if (!firstInvalidField && formType === 'team') {
+                const lEmail = document.getElementById('teamLeaderEmail').value.trim();
+                const mEmail = document.getElementById('teamMemberEmail').value.trim();
+                if (lEmail && mEmail && lEmail === mEmail) {
+                    firstInvalidField = document.getElementById('teamMemberEmail');
+                    errorMessage = "Submission blocked: Leader and Member cannot have the same email address.";
+                } else {
+                    const lPhone = document.getElementById('teamLeaderPhone').value.trim();
+                    const mPhone = document.getElementById('teamMemberPhone').value.trim();
+                    if (lPhone && mPhone && lPhone === mPhone) {
+                        firstInvalidField = document.getElementById('teamMemberPhone');
+                        errorMessage = "Submission blocked: Leader and Member cannot have the same mobile number.";
+                    }
+                }
+            }
+
+            if (firstInvalidField) {
+                firstInvalidField.focus();
+                if (banner) {
+                    banner.innerText = errorMessage;
+                    banner.classList.remove('hidden');
+                }
+                return false;
+            }
+
+            if (banner) {
+                banner.classList.add('hidden');
+                banner.innerText = '';
+            }
+            return true;
+        }
+
+        // --- OTP and Payment UI Transitions ---
+        function initOtpBoxes() {
+            const setupBoxes = (prefix) => {
+                const ids = [0, 1, 2, 3, 4, 5].map(i => prefix + i);
+                ids.forEach((id, idx) => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+
+                    el.addEventListener('input', (e) => {
+                        el.value = el.value.replace(/[^0-9]/g, '');
+                        el.classList.toggle('filled', el.value.length > 0);
+                        if (el.value.length === 1 && idx < ids.length - 1) {
+                            document.getElementById(ids[idx + 1]).focus();
+                        }
+                        document.getElementById('otpError').classList.add('hidden');
+                    });
+
+                    el.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace') {
+                            if (el.value === '' && idx > 0) {
+                                const prev = document.getElementById(ids[idx - 1]);
+                                prev.value = '';
+                                prev.classList.remove('filled');
+                                prev.focus();
+                            }
+                        }
+                        if (e.key === 'ArrowLeft' && idx > 0) document.getElementById(ids[idx - 1]).focus();
+                        if (e.key === 'ArrowRight' && idx < ids.length - 1) document.getElementById(ids[idx + 1]).focus();
+                    });
+
+                    el.addEventListener('paste', (e) => {
+                        e.preventDefault();
+                        const pasted = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+                        pasted.split('').forEach((char, i) => {
+                            const box = document.getElementById(ids[i]);
+                            if (box) {box.value = char; box.classList.add('filled');}
+                        });
+                        const nextEmpty = ids.find(id => !document.getElementById(id).value);
+                        if (nextEmpty) document.getElementById(nextEmpty).focus();
+                        else document.getElementById(ids[5]).focus();
+                    });
+                });
+            };
+            setupBoxes('otp');
+            setupBoxes('motp');
+        }
+
+        let resendTimers = {leader: null, member: null};
+        function startResendTimer(type) {
+            const btn = document.getElementById(type + 'ResendBtn');
+            const timerSpan = document.getElementById(type + 'ResendTimer');
+            if (!btn || !timerSpan) return;
+
+            btn.disabled = true;
+            let timeLeft = 30;
+            timerSpan.innerText = `(${timeLeft}s)`;
+
+            if (resendTimers[type]) clearInterval(resendTimers[type]);
+            resendTimers[type] = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(resendTimers[type]);
+                    btn.disabled = false;
+                    timerSpan.innerText = '';
+                } else {
+                    timerSpan.innerText = `(${timeLeft}s)`;
+                }
+            }, 1000);
+        }
+
+        async function resendOtp(type) {
+            const isSolo = document.getElementById('soloTab').classList.contains('active-tab');
+            const teamName = isSolo ? document.getElementById('soloTeamName').value.trim() : document.getElementById('teamTeamName').value.trim();
+
+            const btn = document.getElementById(type + 'ResendBtn');
+            if (btn) btn.disabled = true;
+
+            try {
+                const response = await fetch(BACKEND_URL + '_/api/v1/pub/auth/resend-otp', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({team_name: teamName})
+                });
+
+                const data = await response.json().catch(() => ({message: 'Invalid server response'}));
+
+                if (!response.ok) {
+                    throw new Error(data.message || `Server error: ${response.status}`);
+                }
+                console.log(`Resent OTP for ${type} in team ${teamName}`);
+                startResendTimer(type);
+            } catch (err) {
+                console.error("Resend OTP Error:", err);
+                const errorBanner = document.getElementById('otpError');
+                if (errorBanner) {
+                    errorBanner.classList.remove('hidden');
+                    errorBanner.innerText = `⚠ RESEND ERROR: ${err.message}`;
+                }
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        async function submitRegistration(formType) {
+            const formEl = document.getElementById(formType + 'FormEl');
+            const submitBtn = formEl.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerText;
+            const errorBanner = document.getElementById(formType + 'SubmitError');
+
+            errorBanner.classList.add('hidden');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'INITIALIZING UPLINK...';
+
+            try {
+                let payload = {registration_type: formType === 'team' ? 'couple' : 'solo'};
+
+                if (formType === 'solo') {
+                    payload.team_name = document.getElementById('soloTeamName').value.trim();
+                    payload.leader_name = formEl.querySelector('input[placeholder="Enter your full name"]').value.trim();
+                    payload.leader_email_id = document.getElementById('soloEmail').value.trim();
+                    payload.leader_mobile_cc = document.getElementById('soloPhoneCC').value.trim();
+                    payload.leader_mobile_number = document.getElementById('soloPhone').value.trim();
+
+                    const selects = formEl.querySelectorAll('select');
+                    payload.leader_gender = selects[0].value.trim();
+                    payload.leader_year_of_study = parseInt(selects[1].value) || 1;
+
+                    payload.leader_college_name = formEl.querySelector('input[list="collegeList"]').value.trim();
+                    payload.leader_degree = formEl.querySelector('input[placeholder="B.Tech, B.E, B.Sc"]').value.trim();
+                    payload.leader_department = formEl.querySelector('input[placeholder="Computer Science, IT"]').value.trim();
+                    payload.leader_location = formEl.querySelector('input[placeholder="City / District"]').value.trim();
+                } else {
+                    payload.team_name = document.getElementById('teamTeamName').value.trim();
+
+                    payload.leader_name = formEl.querySelector('input[placeholder="Leader Name"]').value.trim();
+                    payload.leader_email_id = document.getElementById('teamLeaderEmail').value.trim();
+                    payload.leader_mobile_cc = document.getElementById('teamLeaderPhoneCC').value.trim();
+                    payload.leader_mobile_number = document.getElementById('teamLeaderPhone').value.trim();
+
+                    const selects = formEl.querySelectorAll('select');
+                    payload.leader_year_of_study = parseInt(selects[0].value) || 1;
+                    payload.leader_gender = selects[1].value.trim();
+                    payload.member_year_of_study = parseInt(selects[2].value) || 1;
+                    payload.member_gender = selects[3].value.trim();
+
+                    const locations = formEl.querySelectorAll('input[placeholder="City / District"]');
+                    payload.leader_location = locations[0].value.trim();
+                    payload.member_location = locations[1].value.trim();
+
+                    const colleges = formEl.querySelectorAll('input[list="collegeList"]');
+                    payload.leader_college_name = colleges[0].value.trim();
+                    payload.member_college_name = colleges[1].value.trim();
+
+                    const degrees = formEl.querySelectorAll('input[placeholder="B.Tech, B.E, B.Sc"]');
+                    payload.leader_degree = degrees[0].value.trim();
+                    payload.member_degree = degrees[1].value.trim();
+
+                    const depts = formEl.querySelectorAll('input[placeholder="Computer Science, IT"]');
+                    payload.leader_department = depts[0].value.trim();
+                    payload.member_department = depts[1].value.trim();
+
+                    payload.member_name = formEl.querySelector('input[placeholder="Team Member Name"]').value.trim();
+                    payload.member_email_id = document.getElementById('teamMemberEmail').value.trim();
+                    payload.member_mobile_cc = document.getElementById('teamMemberPhoneCC').value.trim();
+                    payload.member_mobile_number = document.getElementById('teamMemberPhone').value.trim();
+                }
+
+                console.log(payload);
+                const response = await fetch(BACKEND_URL + '_/api/v1/pub/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json().catch(() => ({message: 'Invalid server response'}));
+
+                if (!response.ok && data.next_step !== 'resend_verification') {
+                    throw new Error(data.message || `Server error: ${response.status}`);
+                }
+
+                window.registeredData = data;
+
+                showOtpCard();
+
+            } catch (err) {
+                console.error("Registration Error:", err);
+                errorBanner.classList.remove('hidden');
+                errorBanner.innerText = `⚠ ${err.message}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        }
+
+        function showOtpCard() {
+            document.getElementById('formTabsWrapper').classList.add('hidden');
+            document.getElementById('soloForm').classList.add('hidden');
+            document.getElementById('teamForm').classList.add('hidden');
+
+            const isSolo = document.getElementById('soloTab').classList.contains('active-tab');
+
+            if (isSolo) {
+                document.getElementById('memberOtpSection').classList.add('hidden');
+                document.getElementById('memberOtpSection').classList.remove('flex');
+                document.getElementById('leaderOtpEmailLabel').innerText = document.getElementById('soloEmail').value || 'your email';
+            } else {
+                document.getElementById('memberOtpSection').classList.remove('hidden');
+                document.getElementById('memberOtpSection').classList.add('flex');
+                document.getElementById('leaderOtpEmailLabel').innerText = document.getElementById('teamLeaderEmail').value || 'leader email';
+                document.getElementById('memberOtpEmailLabel').innerText = document.getElementById('teamMemberEmail').value || 'member email';
+                startResendTimer('member');
+            }
+
+            startResendTimer('leader');
+
+            const otpCard = document.getElementById('otpCard');
+            otpCard.classList.remove('hidden');
+            otpCard.classList.add('flex', 'card-pop');
+            // Focus first box
+            setTimeout(() => document.getElementById('otp0').focus(), 100);
+        }
+
+        async function verifyOtp() {
+            const isSolo = document.getElementById('soloTab').classList.contains('active-tab');
+
+            // Collect OTP from 6 boxes
+            const otpValue = ['otp0', 'otp1', 'otp2', 'otp3', 'otp4', 'otp5']
+                .map(id => document.getElementById(id).value)
+                .join('');
+
+            if (otpValue.length < 6) {
+                document.getElementById('otpError').classList.remove('hidden');
+                document.getElementById('otpError').innerText = '⚠ INCOMPLETE LEADER/SOLO CODE';
+                document.getElementById('otp0').focus();
+                return;
+            }
+
+            let motpValue = null;
+            if (!isSolo) {
+                motpValue = ['motp0', 'motp1', 'motp2', 'motp3', 'motp4', 'motp5']
+                    .map(id => document.getElementById(id).value)
+                    .join('');
+
+                if (motpValue.length < 6) {
+                    document.getElementById('otpError').classList.remove('hidden');
+                    document.getElementById('otpError').innerText = '⚠ INCOMPLETE MEMBER CODE';
+                    document.getElementById('motp0').focus();
+                    return;
+                }
+            }
+
+            document.getElementById('otpError').classList.add('hidden');
+
+            const teamName = isSolo ? document.getElementById('soloTeamName').value.trim() : document.getElementById('teamTeamName').value.trim();
+            const leaderEmail = isSolo ? document.getElementById('soloEmail').value.trim() : document.getElementById('teamLeaderEmail').value.trim();
+            const memberEmail = isSolo ? null : document.getElementById('teamMemberEmail').value.trim();
+
+            const verifyBtn = document.querySelector('button[onclick="verifyOtp()"]');
+            const originalBtnText = verifyBtn.innerHTML;
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>VERIFYING...</span>';
+
+            try {
+                const payload = {
+                    team_leader: {
+                        email: leaderEmail,
+                        otp: otpValue
+                    },
+                    team_member: isSolo ? null : {
+                        email: memberEmail,
+                        otp: motpValue
+                    },
+                    team_name: teamName
+                };
+
+                const response = await fetch(BACKEND_URL + '_/api/v1/pub/auth/verify-otp', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json().catch(() => ({message: 'Invalid server response'}));
+
+                if (!response.ok) {
+                    throw new Error(data.message || `Verification failed: ${response.status}`);
+                }
+            } catch (err) {
+                document.getElementById('otpError').classList.remove('hidden');
+                document.getElementById('otpError').innerText = `⚠ ${err.message}`;
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = originalBtnText;
+                return;
+            }
+
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = originalBtnText;
+
+            // --- Fetch registrant name ---
+            let registrantName = "—";
+            if (isSolo) {
+                const nameInputs = document.querySelectorAll('#soloFormEl input[type="text"]');
+                if (nameInputs.length > 0) registrantName = nameInputs[0].value.trim() || "—";
+            } else {
+                const nameInputs = document.querySelectorAll('#teamFormEl input[type="text"]');
+                if (nameInputs.length > 0) registrantName = nameInputs[0].value.trim() || "—";
+            }
+
+            // --- Fetch college value ---
+            let collegeInputValue = "";
+            if (isSolo) {
+                const inputs = document.querySelectorAll('#soloFormEl input[list="collegeList"]');
+                if (inputs.length > 0) collegeInputValue = inputs[0].value;
+            } else {
+                const inputs = document.querySelectorAll('#teamFormEl input[list="collegeList"]');
+                if (inputs.length > 0) collegeInputValue = inputs[0].value;
+            }
+
+            const isCIT = collegeInputValue.toLowerCase().includes('chennai institute of technology') || collegeInputValue.toLowerCase() === 'cit';
+
+            // CIT: ₹400 original, 75% off → ₹300 discount → ₹100 final
+            // Others: ₹400 original, ₹200 discount → ₹200 final
+            const originalPrice = 400;
+            const discount = isCIT ? 300 : 200;
+            const finalPrice = originalPrice - discount;
+            const discountLabel = isCIT ? '75% Early Bird' : 'Early Bird';
+
+            document.getElementById('payName').innerText = registrantName;
+            document.getElementById('payOriginal').innerText = '₹ ' + originalPrice;
+            document.getElementById('payDiscount').innerText = `- ₹ ${discount} (${discountLabel})`;
+            document.getElementById('payTotal').innerText = '₹ ' + finalPrice;
+
+            // Hide OTP card, show payment card with pop animation
+            document.getElementById('otpCard').classList.add('hidden');
+            document.getElementById('otpCard').classList.remove('flex', 'card-pop');
+
+            const paymentCard = document.getElementById('paymentCard');
+            paymentCard.classList.remove('hidden');
+            paymentCard.classList.add('flex', 'card-pop');
+        }
+
+        async function processPayment() {
+            const payBtn = document.querySelector('button[onclick="processPayment()"]');
+            const errorEl = document.getElementById('paymentError');
+            const originalText = payBtn.innerText;
+            errorEl.classList.add('hidden');
+
+            payBtn.disabled = true;
+            payBtn.innerText = 'REDIRECTING...';
+
+            const isSolo = document.getElementById('soloTab').classList.contains('active-tab');
+            const leaderEmail = isSolo
+                ? document.getElementById('soloEmail').value.trim()
+                : document.getElementById('teamLeaderEmail').value.trim();
+
+            try {
+                const resp = await fetch(BACKEND_URL + '_/api/v1/pub/payment/create-order', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email: leaderEmail})
+                });
+
+                const data = await resp.json();
+
+                if (!resp.ok) {
+                    throw new Error(data.message || 'Payment initiation failed');
+                }
+
+                window.location.href = data.payment_link;
+            } catch (err) {
+                errorEl.innerText = '⚠ ' + err.message;
+                errorEl.classList.remove('hidden');
+                payBtn.disabled = false;
+                payBtn.innerText = originalText;
+            }
+        }
+
+        function applyReferral() {
+            const input = document.getElementById('referralCode');
+            const status = document.getElementById('referralStatus');
+            const code = input ? input.value.trim().toUpperCase() : '';
+
+            status.classList.remove('hidden');
+
+            if (!code) {
+                status.style.color = '#ffb4ab';
+                status.innerText = '⚠ Enter a referral code first.';
+                return;
+            }
+
+            // Simulate checking: in a real app, call your API here
+            // For demo, accept any 6+ character code
+            if (code.length >= 6) {
+                status.style.color = '#00dbe9';
+                status.innerText = `✅ CODE ${code} ACCEPTED — Bonus XP unlocked`;
+                input.style.borderColor = 'rgba(0,219,233,0.7)';
+                input.style.boxShadow = '0 0 14px rgba(0,219,233,0.35)';
+                input.disabled = true;
+            } else {
+                status.style.color = '#ffb4ab';
+                status.innerText = `❌ INVALID CODE — Must be at least 6 characters`;
+                input.style.borderColor = 'rgba(255,180,171,0.5)';
+                input.style.boxShadow = '0 0 14px rgba(255,180,171,0.2)';
+            }
+        }
+
+        // Attach listeners on load
+        document.addEventListener("DOMContentLoaded", () => {
+            initOtpBoxes();
+
+            const soloForm = document.getElementById('soloFormEl');
+            const teamForm = document.getElementById('teamFormEl');
+
+            if (soloForm) {
+                soloForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (!validateFormBeforeSubmit('solo')) {
+                        e.stopPropagation();
+                    } else {
+                        submitRegistration('solo');
+                    }
+                });
+            }
+
+            if (teamForm) {
+                teamForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (!validateFormBeforeSubmit('team')) {
+                        e.stopPropagation();
+                    } else {
+                        submitRegistration('team');
+                    }
+                });
+            }
+
+            // Attach input listeners
+            Object.keys(fieldsConfig).forEach(fieldId => {
+                const inputEl = document.getElementById(fieldId);
+                if (inputEl) {
+                    const triggerVerify = () => {
+                        const formType = fieldId.startsWith('solo') ? 'solo' : 'team';
+                        const banner = document.getElementById(formType + 'SubmitError');
+                        if (banner) banner.classList.add('hidden');
+                        performVerification(fieldId);
+                    };
+                    inputEl.addEventListener('input', triggerVerify);
+                    inputEl.addEventListener('change', triggerVerify);
+
+                    const ccEl = document.getElementById(fieldId + 'CC');
+                    if (ccEl) {
+                        ccEl.addEventListener('change', triggerVerify);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

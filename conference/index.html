@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="/styles.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="/assets/js/tailwind-config.js"></script>
+    <link href="/styles.css" rel="stylesheet" />
+</head>
+
+<body
+    class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen font-body-md overflow-x-hidden">
+    <div class="scanline"></div>
+    <!-- TopNavBar -->
+    <!-- TopNavBar Placeholder -->
+    <div id="navbar-placeholder"></div>
+    <!-- SideNavBar Shell (Suppressed as this is a focused Task/Contact Page) -->
+    <main class="pt-32  pb-32 mb-20 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto min-h-screen">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex flex-col gap-2 mb-8 text-center">
+                <span class="font-label-caps text-label-caps tracking-[0.3em] uppercase"
+                    style="color:#d05bff;">Registration Node: 0x2B_CONF</span>
+                <h1 class="font-display-lg text-headline-xl tracking-tighter italic"
+                    style="color:#00dbe9; text-shadow: 0 0 20px rgba(0,219,233,0.4);">CONFERENCE_REG</h1>
+            </div>
+            <div class="glass-panel p-8 relative z-10 rounded-2xl border-t-2 border-primary">
+                <div class="absolute top-4 right-4 text-[10px] font-mono text-secondary/40">STATUS: UPLINK_READY</div>
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div
+                        class="group relative border border-primary/30 rounded-xl bg-black/40 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-colors overflow-hidden">
+                        <label class="font-label-caps text-[10px] uppercase tracking-widest block mb-2 px-4 pt-3"
+                            style="color:rgba(0,219,233,0.6);">Full_Name</label>
+                        <input
+                            class="w-full bg-transparent text-primary outline-none font-body-lg placeholder:text-surface-variant border-none focus:ring-0 px-4 pb-3"
+                            placeholder="Enter your full name" required type="text" />
+                    </div>
+                    <div
+                        class="group relative border border-secondary/30 rounded-xl bg-black/40 focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary transition-colors overflow-hidden">
+                        <label class="font-label-caps text-[10px] uppercase tracking-widest block mb-2 px-4 pt-3"
+                            style="color:rgba(208,91,255,0.6);">Email_ID</label>
+                        <input
+                            class="w-full bg-transparent text-secondary outline-none font-body-lg placeholder:text-surface-variant border-none focus:ring-0 px-4 pb-3"
+                            placeholder="user@domain.com" required type="email" />
+                    </div>
+                    <div
+                        class="group relative border border-primary/30 rounded-xl bg-black/40 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-colors overflow-hidden">
+                        <label class="font-label-caps text-[10px] uppercase tracking-widest block mb-2 px-4 pt-3"
+                            style="color:rgba(0,219,233,0.6);">Mobile_Number</label>
+                        <input
+                            class="w-full bg-transparent text-primary outline-none font-body-lg placeholder:text-surface-variant border-none focus:ring-0 px-4 pb-3"
+                            placeholder="+91 9876543210" required type="tel" />
+                    </div>
+                    <div
+                        class="group relative border border-secondary/30 rounded-xl bg-black/40 focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary transition-colors overflow-hidden">
+                        <label class="font-label-caps text-[10px] uppercase tracking-widest block mb-2 px-4 pt-3"
+                            style="color:rgba(208,91,255,0.6);">College_Name</label>
+                        <input
+                            class="w-full bg-transparent text-secondary outline-none font-body-lg placeholder:text-surface-variant border-none focus:ring-0 px-4 pb-3"
+                            placeholder="Name of Institution" required type="text" />
+                    </div>
+                    <div
+                        class="group relative border border-primary/30 rounded-xl bg-black/40 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-colors overflow-hidden">
+                        <label class="font-label-caps text-[10px] uppercase tracking-widest block mb-2 px-4 pt-3"
+                            style="color:rgba(0,219,233,0.6);">Degree</label>
+                        <input
+                            class="w-full bg-transparent text-primary outline-none font-body-lg placeholder:text-surface-variant border-none focus:ring-0 px-4 pb-3"
+                            placeholder="E.g., B.Tech, B.E, B.Sc" required type="text" />
+                    </div>
+                    <div
+                        class="group relative border border-secondary/30 rounded-xl bg-black/40 focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary transition-colors overflow-hidden">
+                        <label class="font-label-caps text-[10px] uppercase tracking-widest block mb-2 px-4 pt-3"
+                            style="color:rgba(208,91,255,0.6);">Department</label>
+                        <input
+                            class="w-full bg-transparent text-secondary outline-none font-body-lg placeholder:text-surface-variant border-none focus:ring-0 px-4 pb-3"
+                            placeholder="E.g., Computer Science, IT" required type="text" />
+                    </div>
+                    <div
+                        class="group relative border border-primary/30 rounded-xl bg-black/40 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-colors overflow-hidden">
+                        <label class="font-label-caps text-[10px] uppercase tracking-widest block mb-2 px-4 pt-3"
+                            style="color:rgba(0,219,233,0.6);">Year_of_Study</label>
+                        <select
+                            class="w-full bg-transparent text-primary outline-none font-body-lg placeholder:text-surface-variant border-none focus:ring-0 px-4 pb-3 appearance-none"
+                            required>
+                            <option value="" class="bg-black text-white">Select Year</option>
+                            <option value="1" class="bg-black text-white">1st Year</option>
+                            <option value="2" class="bg-black text-white">2nd Year</option>
+                            <option value="3" class="bg-black text-white">3rd Year</option>
+                            <option value="4" class="bg-black text-white">4th Year</option>
+                        </select>
+                        <span
+                            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-primary/50">expand_more</span>
+                    </div>
+
+                    <div
+                        class="group relative border border-secondary/30 rounded-xl bg-black/40 focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary transition-colors overflow-hidden">
+                        <label class="font-label-caps text-[10px] uppercase tracking-widest block mb-2 px-4 pt-3"
+                            style="color:rgba(208,91,255,0.6);">Location</label>
+                        <input
+                            class="w-full bg-transparent text-secondary outline-none font-body-lg placeholder:text-surface-variant border-none focus:ring-0 px-4 pb-3"
+                            placeholder="City / District" required type="text" />
+                    </div>
+                    <div class="md:col-span-2 mt-8 flex justify-center">
+                        <button
+                            class="bg-primary-container text-on-primary-container rounded-xl shadow-[0_0_20px_rgba(0,219,233,0.4)] group relative px-16 py-4 font-bold tracking-widest uppercase hover:bg-white transition-all transform active:scale-95"
+                            type="submit">
+                            <span class="relative z-10 flex items-center gap-2">INITIALIZE_UPLINK <span
+                                    class="material-symbols-outlined text-sm">send</span></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer class="w-full bg-black/95 border-t border-primary/20 py-10">
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col lg:flex-row items-center justify-between gap-8">
+            <a class="flex items-center gap-4 group" data-env="CLUB_URL" href="https://www.exploitx.org"
+                aria-label="ExploitX official club page">
+                <img src="/assets/images/exploitx-logo.png" alt="ExploitX club logo"
+                    class="w-12 h-12 rounded-full border border-primary/30 bg-black/40 object-contain" />
+                <div class="flex flex-col">
+                    <span
+                        class="text-primary font-bold font-display-lg text-sm uppercase tracking-wider">ExploitX</span>
+                    <span class="text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">Official
+                        club page</span>
+                </div>
+            </a>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="INSTAGRAM_URL" href="https://www.instagram.com/exploitxorg" aria-label="Instagram">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Instagram</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="LINKEDIN_URL" href="https://www.linkedin.com/company/exploitxorg/" aria-label="LinkedIn">
+                    <span class="material-symbols-outlined text-base">work</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="X_URL" href="https://twitter.com/exploitxorg" aria-label="X">
+                    <span class="material-symbols-outlined text-base">close</span>
+                    <span>X</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="REDDIT_URL" href="https://www.reddit.com/user/exploitxorg" aria-label="Reddit">
+                    <span class="material-symbols-outlined text-base">forum</span>
+                    <span>Reddit</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="GITHUB_URL" href="https://github.com/exploitx-org" aria-label="GitHub">
+                    <span class="material-symbols-outlined text-base">code</span>
+                    <span>GitHub</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MASTODON_URL" href="https://mastodon.social/@exploitxorg" aria-label="Mastodon">
+                    <span class="material-symbols-outlined text-base">hub</span>
+                    <span>Mastodon</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MAIL_URL" href="mailto:exploitx@citchennai.net" aria-label="Email">
+                    <span class="material-symbols-outlined text-base">mail</span>
+                    <span>Mail</span>
+                </a>
+            </div>
+        </div>
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop mt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">
+            <div>© 2124 MULTIVERSE_CORE. ALL RIGHTS RESERVED. [RESTRICTED ACCESS]</div>
+            <div class="flex flex-wrap items-center justify-center gap-6">
+                <a class="hover:text-primary transition-all" href="/terms">PROTOCOL_TC</a>
+
+                <a class="hover:text-primary transition-all" href="/privacy">PRIVACY_ENCRYPT</a>
+                <a class="hover:text-primary transition-all" href="/sitemap">SITEMAP_DIR</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/assets/js/footer-links.js"></script>
+
+    <script src="/assets/js/navbar.js"></script>
+</body>
+
+</html>

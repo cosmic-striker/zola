@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Into the Void 2.0 | Privacy Policy</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="/styles.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #000000;
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(0, 219, 233, 0.05) 0%, transparent 50%),
+                repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 2px);
+            background-size: 100% 100%, 100% 4px;
+        }
+
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 219, 233, 0.02) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .glitch-border {
+            position: relative;
+        }
+
+        .glitch-border::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(90deg, transparent, #00dbe9, transparent, #d05bff, transparent);
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: #00dbe9;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#00363a",
+                        "on-tertiary-fixed": "#380038",
+                        "tertiary-fixed-dim": "#ffabf3",
+                        "on-secondary-fixed-variant": "#75009e",
+                        "inverse-primary": "#006970",
+                        "secondary": "#ecb1ff",
+                        "on-background": "#e2e2e2",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-container": "#a900a9",
+                        "inverse-on-surface": "#303030",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#006970",
+                        "surface-container": "#1f1f1f",
+                        "surface-container-highest": "#353535",
+                        "error-container": "#93000a",
+                        "secondary-container": "#d05bff",
+                        "primary-container": "#00f0ff",
+                        "surface-bright": "#393939",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffd7f5",
+                        "tertiary": "#fff3f9",
+                        "primary-fixed": "#7df4ff",
+                        "on-secondary": "#520070",
+                        "on-error": "#690005",
+                        "outline": "#849495",
+                        "surface-dim": "#131313",
+                        "on-primary-fixed-variant": "#004f54",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary-container": "#ffc9f4",
+                        "surface-container-low": "#1b1b1b",
+                        "background": "#131313",
+                        "surface-variant": "#353535",
+                        "on-secondary-container": "#480063",
+                        "surface-tint": "#00dbe9",
+                        "outline-variant": "#3b494b",
+                        "primary": "#dbfcff",
+                        "on-tertiary-fixed-variant": "#810081",
+                        "secondary-fixed-dim": "#ecb1ff",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-secondary-fixed": "#320046",
+                        "on-primary-fixed": "#002022",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "on-tertiary": "#5b005b",
+                        "on-surface": "#e2e2e2",
+                        "secondary-fixed": "#f9d8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "grid-columns": "12",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["JetBrains Mono"],
+                        "label-caps": ["Space Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-xl": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+    <div class="scanline-overlay"></div>
+    <!-- TopNavBar -->
+    <header class="liquid-navbar">
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+
+            </div>
+            <nav class="hidden md:flex items-center gap-8">
+                <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps"
+                    href="/home">Home</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps"
+                    href="/home">Event</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps"
+                    href="/home">Registration</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps"
+                    href="/home">Sponsor</a>
+
+            </nav>
+            <div class="flex items-center">
+
+            </div>
+        </div>
+    </header>
+    <!-- Main Canvas -->
+    <main class="pt-24  px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto min-h-screen">
+        <!-- Hero Section -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-16">
+            <div class="md:col-span-12 mb-8">
+                <h1 class="font-display-lg text-display-lg text-primary tracking-tighter uppercase italic leading-none">
+                    Privacy Encryption</h1>
+                <p class="font-body-md text-on-surface-variant mt-4 max-w-2xl">Your data security is our highest
+                    priority. This privacy policy outlines how we protect, process, and secure your information in our
+                    quantum-encrypted systems.</p>
+            </div>
+            <!-- Last Updated -->
+            <div class="md:col-span-12 mb-8">
+                <div class="bg-surface-container-lowest border border-secondary/20 p-4 backdrop-blur-xl">
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-secondary">schedule</span>
+                        <div>
+                            <span class="font-label-caps text-secondary text-sm">LAST_UPDATED</span>
+                            <p class="text-[12px] text-on-surface-variant">November 15, 2124 | Version 2.0.1</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Privacy Overview -->
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-12 border-b border-primary/20 pb-4">
+                <div class="flex items-center gap-4">
+                    <h2 class="font-headline-lg text-headline-lg text-primary tracking-tight uppercase">Privacy Overview
+                    </h2>
+                    <div class="h-2 w-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_#00dbe9]"></div>
+                </div>
+                <div class="font-label-caps text-label-caps text-on-surface-variant">DATA_PROTECTION</div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Data Collection -->
+                <div class="bg-surface-container-lowest border border-primary/10 p-6 backdrop-blur-xl">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-primary/20 flex items-center justify-center border border-primary">
+                            <span class="material-symbols-outlined text-primary">database</span>
+                        </div>
+                        <div>
+                            <h3 class="font-label-caps text-primary text-sm">DATA_COLLECTION</h3>
+                            <p class="text-[10px] text-on-surface-variant">What information we collect</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="text-[12px] font-body-md text-on-surface-variant">• Registration information (name,
+                            contact details)</div>
+                        <div class="text-[12px] font-body-md text-on-surface-variant">• Biometric data for security
+                            verification</div>
+                        <div class="text-[12px] font-body-md text-on-surface-variant">• Event participation and workshop
+                            data</div>
+                        <div class="text-[12px] font-body-md text-on-surface-variant">• Communication logs and support
+                            interactions</div>
+                    </div>
+                </div>
+                <!-- Data Security -->
+                <div class="bg-surface-container-lowest border border-secondary/10 p-6 backdrop-blur-xl">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-secondary/20 flex items-center justify-center border border-secondary">
+                            <span class="material-symbols-outlined text-secondary">security</span>
+                        </div>
+                        <div>
+                            <h3 class="font-label-caps text-secondary text-sm">DATA_SECURITY</h3>
+                            <p class="text-[10px] text-on-surface-variant">How we protect your data</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="text-[12px] font-body-md text-on-surface-variant">• AES-4096-Void quantum encryption
+                        </div>
+                        <div class="text-[12px] font-body-md text-on-surface-variant">• Multi-dimensional data
+                            redundancy</div>
+                        <div class="text-[12px] font-body-md text-on-surface-variant">• Zero-knowledge architecture
+                        </div>
+                        <div class="text-[12px] font-body-md text-on-surface-variant">• Continuous security monitoring
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Detailed Privacy Policy -->
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-12 border-b border-secondary/20 pb-4">
+                <div class="flex items-center gap-4">
+                    <h2 class="font-headline-lg text-headline-lg text-secondary tracking-tight uppercase">Detailed
+                        Policy</h2>
+                    <div class="h-2 w-2 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_#d05bff]"></div>
+                </div>
+                <div class="font-label-caps text-label-caps text-on-surface-variant">LEGAL_FRAMEWORK</div>
+            </div>
+            <div class="space-y-8">
+                <!-- Section 1 -->
+                <div class="bg-surface-container-lowest border border-primary/10 p-8 backdrop-blur-xl">
+                    <h3 class="font-headline-lg text-primary text-xl mb-4">1. Information We Collect</h3>
+                    <p class="font-body-md text-on-surface-variant mb-4">We collect information necessary to provide our
+                        services and ensure event security. This includes:</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-label-caps text-primary text-sm mb-2">PERSONAL_INFORMATION</h4>
+                            <ul class="space-y-2 text-[12px] font-body-md text-on-surface-variant">
+                                <li>• Full name and contact details</li>
+                                <li>• Professional background and affiliations</li>
+                                <li>• Emergency contact information</li>
+                                <li>• Dietary restrictions and accessibility needs</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-label-caps text-secondary text-sm mb-2">TECHNICAL_DATA</h4>
+                            <ul class="space-y-2 text-[12px] font-body-md text-on-surface-variant">
+                                <li>• IP addresses and device information</li>
+                                <li>• Browser and system specifications</li>
+                                <li>• Access logs and usage patterns</li>
+                                <li>• Biometric verification data</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Section 2 -->
+                <div class="bg-surface-container-lowest border border-secondary/10 p-8 backdrop-blur-xl">
+                    <h3 class="font-headline-lg text-secondary text-xl mb-4">2. How We Use Your Information</h3>
+                    <p class="font-body-md text-on-surface-variant mb-4">Your data is used exclusively for event
+                        operations and security:</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-label-caps text-primary text-sm mb-2">EVENT_OPERATIONS</h4>
+                            <ul class="space-y-2 text-[12px] font-body-md text-on-surface-variant">
+                                <li>• Registration and ticket validation</li>
+                                <li>• Workshop and session assignments</li>
+                                <li>• Team formation and communication</li>
+                                <li>• Event logistics and coordination</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-label-caps text-secondary text-sm mb-2">SECURITY_PURPOSES</h4>
+                            <ul class="space-y-2 text-[12px] font-body-md text-on-surface-variant">
+                                <li>• Identity verification and access control</li>
+                                <li>• Fraud prevention and detection</li>
+                                <li>• Emergency response coordination</li>
+                                <li>• Legal compliance and reporting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Section 3 -->
+                <div class="bg-surface-container-lowest border border-primary/10 p-8 backdrop-blur-xl">
+                    <h3 class="font-headline-lg text-primary text-xl mb-4">3. Data Sharing and Disclosure</h3>
+                    <p class="font-body-md text-on-surface-variant mb-4">We do not sell, trade, or rent your personal
+                        information. Data sharing is limited to:</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+                            <div>
+                                <h4 class="font-label-caps text-primary text-sm">AUTHORIZED_PARTNERS</h4>
+                                <p class="text-[12px] font-body-md text-on-surface-variant">Sponsors and partners for
+                                    event operations (with your consent)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+                            <div>
+                                <h4 class="font-label-caps text-secondary text-sm">LEGAL_REQUIREMENTS</h4>
+                                <p class="text-[12px] font-body-md text-on-surface-variant">When required by law or to
+                                    protect rights and safety</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+                            <div>
+                                <h4 class="font-label-caps text-primary text-sm">SERVICE_PROVIDERS</h4>
+                                <p class="text-[12px] font-body-md text-on-surface-variant">Third-party vendors under
+                                    strict confidentiality agreements</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Section 4 -->
+                <div class="bg-surface-container-lowest border border-secondary/10 p-8 backdrop-blur-xl">
+                    <h3 class="font-headline-lg text-secondary text-xl mb-4">4. Your Rights and Choices</h3>
+                    <p class="font-body-md text-on-surface-variant mb-4">You have complete control over your data:</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-label-caps text-primary text-sm mb-2">ACCESS_RIGHTS</h4>
+                            <ul class="space-y-2 text-[12px] font-body-md text-on-surface-variant">
+                                <li>• Request access to your personal data</li>
+                                <li>• Correct inaccurate information</li>
+                                <li>• Request data portability</li>
+                                <li>• Withdraw consent at any time</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-label-caps text-secondary text-sm mb-2">DATA_CONTROL</h4>
+                            <ul class="space-y-2 text-[12px] font-body-md text-on-surface-variant">
+                                <li>• Request data deletion</li>
+                                <li>• Opt-out of communications</li>
+                                <li>• Restrict processing</li>
+                                <li>• Object to data usage</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Section 5 -->
+                <div class="bg-surface-container-lowest border border-primary/10 p-8 backdrop-blur-xl">
+                    <h3 class="font-headline-lg text-primary text-xl mb-4">5. Data Retention</h3>
+                    <p class="font-body-md text-on-surface-variant mb-4">We retain your data only as long as necessary:
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-2 border-b border-primary/20">
+                            <span class="text-[12px] font-body-md text-on-surface-variant">Registration Data</span>
+                            <span class="text-[12px] font-label-caps text-primary">7 YEARS</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-secondary/20">
+                            <span class="text-[12px] font-body-md text-on-surface-variant">Biometric Data</span>
+                            <span class="text-[12px] font-label-caps text-secondary">30 DAYS POST-EVENT</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-primary/20">
+                            <span class="text-[12px] font-body-md text-on-surface-variant">Communication Logs</span>
+                            <span class="text-[12px] font-label-caps text-primary">2 YEARS</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-[12px] font-body-md text-on-surface-variant">Financial Records</span>
+                            <span class="text-[12px] font-label-caps text-secondary">10 YEARS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact Information -->
+        <section class="mb-16">
+            <div class="bg-surface-container-lowest border border-secondary/20 p-8 backdrop-blur-xl text-center">
+                <div class="mb-6">
+                    <span class="material-symbols-outlined text-4xl text-secondary mb-4 block">contact_mail</span>
+                    <h2 class="font-headline-xl text-headline-xl text-secondary mb-4">Privacy Inquiries</h2>
+                    <p class="font-body-md text-on-surface-variant max-w-2xl mx-auto mb-6">For privacy-related questions
+                        or to exercise your data rights, contact our Data Protection Officer through secure channels.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <h3 class="font-label-caps text-primary text-sm mb-2">SECURE_EMAIL</h3>
+                            <p class="text-[12px] font-body-md text-on-surface-variant">privacy@void-core.net</p>
+                        </div>
+                        <div>
+                            <h3 class="font-label-caps text-secondary text-sm mb-2">ENCRYPTED_COMM</h3>
+                            <p class="text-[12px] font-body-md text-on-surface-variant">PGP Key ID: VOID_PRIV_2048</p>
+                        </div>
+                        <div>
+                            <h3 class="font-label-caps text-primary text-sm mb-2">RESPONSE_TIME</h3>
+                            <p class="text-[12px] font-body-md text-on-surface-variant">Within 30 days</p>
+                        </div>
+                    </div>
+                    <button
+                        class="px-8 py-3 bg-secondary text-on-secondary font-label-caps text-label-caps hover:bg-primary hover:text-on-primary transition-all">
+                        CONTACT_PRIVACY_OFFICER
+                    </button>
+                </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-black/95 border-t border-primary/20 py-10">
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col lg:flex-row items-center justify-between gap-8">
+            <a class="flex items-center gap-4 group" data-env="CLUB_URL" href="https://www.exploitx.org"
+                aria-label="ExploitX official club page">
+                <img src="/assets/images/exploitx-logo.png" alt="ExploitX club logo"
+                    class="w-12 h-12 rounded-full border border-primary/30 bg-black/40 object-contain" />
+                <div class="flex flex-col">
+                    <span
+                        class="text-primary font-bold font-display-lg text-sm uppercase tracking-wider">ExploitX</span>
+                    <span class="text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">Official
+                        club page</span>
+                </div>
+            </a>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="INSTAGRAM_URL" href="https://www.instagram.com/exploitxorg" aria-label="Instagram">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Instagram</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="LINKEDIN_URL" href="https://www.linkedin.com/company/exploitxorg/" aria-label="LinkedIn">
+                    <span class="material-symbols-outlined text-base">work</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="X_URL" href="https://twitter.com/exploitxorg" aria-label="X">
+                    <span class="material-symbols-outlined text-base">close</span>
+                    <span>X</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="REDDIT_URL" href="https://www.reddit.com/user/exploitxorg" aria-label="Reddit">
+                    <span class="material-symbols-outlined text-base">forum</span>
+                    <span>Reddit</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="GITHUB_URL" href="https://github.com/exploitx-org" aria-label="GitHub">
+                    <span class="material-symbols-outlined text-base">code</span>
+                    <span>GitHub</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MASTODON_URL" href="https://mastodon.social/@exploitxorg" aria-label="Mastodon">
+                    <span class="material-symbols-outlined text-base">hub</span>
+                    <span>Mastodon</span>
+                </a>
+                <a class="flex items-center gap-2 text-on-surface-variant/70 hover:text-primary transition-all font-label-caps text-[12px] uppercase"
+                    data-env="MAIL_URL" href="mailto:exploitx@citchennai.net" aria-label="Email">
+                    <span class="material-symbols-outlined text-base">mail</span>
+                    <span>Mail</span>
+                </a>
+            </div>
+        </div>
+        <div
+            class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop mt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant/60 font-body-md text-[10px] tracking-widest uppercase">
+            <div>© 2124 MULTIVERSE_CORE. ALL RIGHTS RESERVED. [RESTRICTED ACCESS]</div>
+            <div class="flex flex-wrap items-center justify-center gap-6">
+                <a class="hover:text-primary transition-all" href="/terms">PROTOCOL_TC</a>
+
+                <a class="hover:text-primary transition-all" href="/privacy">PRIVACY_ENCRYPT</a>
+                <a class="hover:text-primary transition-all" href="/sitemap">SITEMAP_DIR</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/assets/js/footer-links.js"></script>
+    <script src="/assets/js/smooth-scroll.js"></script>
+</body>
+
+</html>
